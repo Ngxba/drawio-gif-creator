@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Test files (keep test-diagram.drawio as it's part of the project)
+# But ignore any other test outputs
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+
+#drawio bkp file
+*.drawio.bkp

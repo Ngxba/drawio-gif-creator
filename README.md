@@ -1,0 +1,277 @@
+# 🎬 Draw.io to GIF Converter
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org)
+
+A powerful command-line tool that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
+
+Perfect for creating animated documentation, tutorials, presentations, or sharing your diagrams on platforms that support GIF animations!
+
+## ✨ Features
+
+- 🎥 **Animated GIF Creation** - Records the diagram loading process over time
+- ⚙️ **Fully Customizable** - Control recording duration (1-60s) and frame rate (1-30 fps)
+- 🖼️ **High Quality Output** - Produces proper multi-frame animated GIF files
+- 🎯 **Clean Export** - No UI elements, just your diagram
+- 🚀 **Headless Rendering** - Uses Puppeteer for accurate browser-based rendering
+- 📦 **Multiple Formats** - Supports `.drawio`, `.dio`, and `.xml` files
+- 🛡️ **Error Handling** - Comprehensive error handling for reliable operation
+- 🔧 **Easy to Use** - Simple CLI interface
+
+## 📋 Requirements
+
+- **Node.js** 16.0.0 or higher
+- **npm** (comes with Node.js)
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/ngxba/drawio-gif-creator.git
+cd drawio-gif-creator
+
+# Install dependencies
+npm install
+```
+
+### Basic Usage
+
+```bash
+# Try with the included sample diagram
+node src/index.js sample.drawio output.gif
+
+# Convert your own diagram with default settings (5 seconds at 10 fps)
+node src/index.js your-diagram.drawio output.gif
+
+# Custom duration and frame rate
+node src/index.js your-diagram.drawio output.gif 10 15
+```
+
+> 💡 **Tip**: A `sample.drawio` file is included in the repository so you can test the tool immediately!
+
+## 📖 Usage Guide
+
+### Command Syntax
+
+```bash
+node src/index.js <input-file> <output-file> [duration] [fps]
+```
+
+### Parameters
+
+| Parameter | Description | Required | Default | Range |
+|-----------|-------------|----------|---------|-------|
+| `input-file` | Path to your draw.io diagram file | ✅ Yes | - | `.drawio`, `.dio`, `.xml` |
+| `output-file` | Path for the output GIF file | ✅ Yes | - | `.gif` |
+| `duration` | Recording duration in seconds | ❌ No | 5 | 1-60 |
+| `fps` | Frames per second | ❌ No | 10 | 1-30 |
+
+### Examples
+
+```bash
+# Quick 5-second animation at 10 fps (50 frames)
+node src/index.js diagram.drawio output.gif
+
+# Longer 10-second animation at 15 fps (150 frames)
+node src/index.js diagram.drawio output.gif 10 15
+
+# Short and compact: 3 seconds at 8 fps (24 frames)
+node src/index.js diagram.drawio output.gif 3 8
+
+# High frame rate for smooth animation: 5 seconds at 20 fps (100 frames)
+node src/index.js diagram.drawio output.gif 5 20
+```
+
+### Global Installation
+
+Install globally to use from anywhere on your system:
+
+```bash
+npm link
+drawio-to-gif diagram.drawio output.gif 5 10
+```
+
+## 🎨 Output Examples
+
+### Example Result
+
+Here's an example of what you can create with this tool:
+
+![Example GIF Output](result.gif)
+
+*Generated from the included `sample.drawio` file*
+
+The application produces animated GIFs that loop continuously:
+
+- **Small**: 3 seconds @ 8 fps ≈ 1-2 MB (24 frames)
+- **Medium**: 5 seconds @ 10 fps ≈ 2-5 MB (50 frames)
+- **Large**: 10 seconds @ 15 fps ≈ 5-15 MB (150 frames)
+
+### What Gets Captured
+
+- ✅ The complete diagram as it loads
+- ✅ Any animations or transitions in the viewer
+- ✅ Proper dimensions matching your diagram
+- ✅ Clean rendering without draw.io UI elements
+- ✅ Padding around the diagram for better presentation
+
+### Try It Yourself
+
+A sample draw.io file (`sample.drawio`) is included in the repository. You can test the tool immediately after installation:
+
+```bash
+# Using the included sample file
+node src/index.js sample.drawio my-output.gif
+
+# Or with custom settings
+node src/index.js sample.drawio my-output.gif 5 15
+```
+
+## 📊 Performance & Optimization
+
+### File Size Calculation
+
+**Frame count** = duration × fps
+
+Example: 5 seconds at 10 fps = **50 frames**
+
+**File size** ≈ 50-100 KB per frame (varies with diagram complexity)
+
+### Optimization Tips
+
+| Goal | Recommended Settings | Output |
+|------|---------------------|---------|
+| **Smallest file** | 3s @ 5fps | ~15 frames, 0.7-1.5 MB |
+| **Balanced** | 5s @ 10fps | ~50 frames, 2-5 MB |
+| **Smooth animation** | 5s @ 20fps | ~100 frames, 4-10 MB |
+| **Best quality** | 10s @ 25fps | ~250 frames, 10-25 MB |
+
+**Processing time**: Approximately 1-2 seconds per second of recording
+
+### Tips
+
+- 📉 **Lower FPS** (5-10) = Smaller files, faster processing
+- 🎞️ **Higher FPS** (15-30) = Smoother animation, larger files
+- ⏱️ **Shorter duration** (3-5s) = Quick conversion, compact output
+- 🎬 **Longer duration** (8-10s) = Captures more of the loading process
+
+## 🏗️ Project Structure
+
+```
+drawio-gif-creator/
+├── src/
+│   ├── index.js           # CLI entry point and argument parsing
+│   ├── converter.js       # Main conversion orchestration
+│   ├── fileReader.js      # Draw.io file reading and validation
+│   ├── renderer.js        # Puppeteer-based frame capture
+│   └── imageConverter.js  # Multi-frame GIF encoding
+├── sample.drawio          # Sample diagram file for testing
+├── result.gif             # Example output (generated from sample.drawio)
+├── Makefile               # Convenience commands
+├── package.json           # Dependencies and metadata
+├── .gitignore             # Git ignore rules
+└── README.md              # This file
+```
+
+## 🔧 How It Works
+
+1. **📖 File Reading** - Reads and validates the draw.io XML file
+2. **🌐 Browser Launch** - Starts headless Chrome via Puppeteer
+3. **🎨 Diagram Loading** - Loads diagram in the diagrams.net viewer
+4. **📸 Frame Capture** - Takes screenshots at specified intervals
+5. **🎞️ GIF Encoding** - Converts PNG frames to animated GIF
+6. **💾 File Output** - Saves the final GIF to disk
+
+## 📦 Dependencies
+
+- **[puppeteer](https://github.com/puppeteer/puppeteer)** (^22.0.0) - Headless Chrome automation
+- **[sharp](https://github.com/lovell/sharp)** (^0.33.0) - High-performance image processing
+- **[gif-encoder-2](https://github.com/benjaminadk/gif-encoder-2)** (^1.0.5) - Pure JavaScript GIF encoder
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**"File not found" error**
+- Verify the input file path is correct
+- Ensure the file has a `.drawio`, `.dio`, or `.xml` extension
+
+**"Rendering timeout" error**
+- Check your internet connection (required to access diagrams.net viewer)
+- Try increasing the duration parameter
+- Ensure the draw.io file is valid
+
+**Large file sizes**
+- Reduce FPS (e.g., from 15 to 8)
+- Shorten duration (e.g., from 10s to 5s)
+- Simplify your diagram if possible
+
+**Out of memory errors**
+- Reduce the total frame count (duration × fps)
+- Process smaller diagrams
+- Increase Node.js memory: `node --max-old-space-size=4096 src/index.js ...`
+
+## ⚠️ Limitations
+
+- Requires internet connection to access the diagrams.net viewer
+- Maximum duration: 60 seconds
+- Maximum FPS: 30
+- Processing time scales with duration and frame rate
+- Large/complex diagrams produce larger GIF files
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see below for details:
+
+```
+MIT License
+
+Copyright (c) 2024 Draw.io GIF Creator
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## 🌟 Show Your Support
+
+If you find this project useful, please consider:
+- ⭐ Starring the repository
+- 🐛 Reporting bugs or requesting features via [Issues](https://github.com/ngxba/drawio-gif-creator/issues)
+- 🔀 Contributing improvements via Pull Requests
+- 📢 Sharing with others who might find it useful
+
+## 📧 Contact & Support
+
+- **Issues**: [GitHub Issues](https://github.com/ngxba/drawio-gif-creator/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/ngxba/drawio-gif-creator/discussions)
+
+---
+
+Made with ❤️ for the draw.io/diagrams.net community
