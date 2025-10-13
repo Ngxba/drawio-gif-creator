@@ -7,9 +7,16 @@
     "drawio-to-gif": "./src/index.js"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix"
   },
-  "keywords": ["drawio", "gif", "converter", "diagram"],
+  "keywords": [
+    "drawio",
+    "gif",
+    "converter",
+    "diagram"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -20,5 +27,8 @@
   },
   "engines": {
     "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
   }
 }

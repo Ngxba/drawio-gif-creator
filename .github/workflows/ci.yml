@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check for syntax errors
+      run: node -c src/index.js
+
+    - name: Test conversion (if sample.drawio exists)
+      run: |
+        if [ -f "sample.drawio" ]; then
+          echo "Testing with sample.drawio..."
+          node src/index.js sample.drawio test-output.gif 3 8
+          echo "Test successful!"
+        else
+          echo "No sample file found, skipping test"
+        fi
