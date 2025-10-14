@@ -1,5 +1,9 @@
 # Dependencies
 node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+bun.lock
 
 # Test files (keep test-diagram.drawio as it's part of the project)
 # But ignore any other test outputs
@@ -8,10 +12,13 @@ node_modules/
 logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # OS files
 .DS_Store
 Thumbs.db
+*.pem
 
 # IDE
 .vscode/
@@ -23,6 +30,25 @@ Thumbs.db
 # Environment variables
 .env
 .env.local
+.env*.local
 
-#drawio bkp file
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# Production
+/build
+/dist
+
+# TypeScript
+*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Testing
+/coverage
+
+# Drawio backup files
 *.drawio.bkp

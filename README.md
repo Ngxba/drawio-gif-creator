@@ -3,7 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.17.0-brightgreen)](https://nodejs.org)
 
-A powerful command-line tool that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
+A dual-interface application that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
+
+**Two ways to use it:**
+- 💻 **Command-Line Tool** - Direct file conversion for automation and scripting
+- 🌐 **Web Application** - Modern Next.js UI with drag-and-drop file upload, real-time preview, and adjustable settings
 
 Perfect for creating animated documentation, tutorials, presentations, or sharing your diagrams on platforms that support GIF animations!
 
@@ -16,7 +20,8 @@ Perfect for creating animated documentation, tutorials, presentations, or sharin
 - 🚀 **Headless Rendering** - Uses Puppeteer for accurate browser-based rendering
 - 📦 **Multiple Formats** - Supports `.drawio`, `.dio`, and `.xml` files
 - 🛡️ **Error Handling** - Comprehensive error handling for reliable operation
-- 🔧 **Easy to Use** - Simple CLI interface
+- 💻 **CLI Available** - Command-line interface for automation and scripting
+- 🔄 **Dual Interface** - Use the web app or CLI tool - same conversion engine
 
 ## 📋 Requirements
 
@@ -36,7 +41,7 @@ cd drawio-gif-creator
 npm install
 ```
 
-### Basic Usage
+### Option 1: Command-Line Interface
 
 ```bash
 # Try with the included sample diagram
@@ -49,26 +54,37 @@ node src/index.js your-diagram.drawio output.gif
 node src/index.js your-diagram.drawio output.gif 10 15
 ```
 
+### Option 2: Web Application
+
+```bash
+# Start the development server
+npm run dev
+
+# Open http://localhost:3000 in your browser
+```
+
 > 💡 **Tip**: A `sample.drawio` file is included in the repository so you can test the tool immediately!
 
 ## 📖 Usage Guide
 
-### Command Syntax
+### Command-Line Usage
+
+#### Command Syntax
 
 ```bash
 node src/index.js <input-file> <output-file> [duration] [fps]
 ```
 
-### Parameters
+#### Parameters
 
-| Parameter | Description | Required | Default | Range |
-|-----------|-------------|----------|---------|-------|
-| `input-file` | Path to your draw.io diagram file | ✅ Yes | - | `.drawio`, `.dio`, `.xml` |
-| `output-file` | Path for the output GIF file | ✅ Yes | - | `.gif` |
-| `duration` | Recording duration in seconds | ❌ No | 5 | 1-60 |
-| `fps` | Frames per second | ❌ No | 10 | 1-30 |
+| Parameter     | Description                       | Required | Default | Range                     |
+| ------------- | --------------------------------- | -------- | ------- | ------------------------- |
+| `input-file`  | Path to your draw.io diagram file | ✅ Yes    | -       | `.drawio`, `.dio`, `.xml` |
+| `output-file` | Path for the output GIF file      | ✅ Yes    | -       | `.gif`                    |
+| `duration`    | Recording duration in seconds     | ❌ No     | 5       | 1-60                      |
+| `fps`         | Frames per second                 | ❌ No     | 10      | 1-30                      |
 
-### Examples
+#### CLI Examples
 
 ```bash
 # Quick 5-second animation at 10 fps (50 frames)
@@ -84,7 +100,7 @@ node src/index.js diagram.drawio output.gif 3 8
 node src/index.js diagram.drawio output.gif 5 20
 ```
 
-### Global Installation
+#### Global CLI Installation
 
 Install globally to use from anywhere on your system:
 
@@ -92,6 +108,15 @@ Install globally to use from anywhere on your system:
 npm link
 drawio-to-gif diagram.drawio output.gif 5 10
 ```
+
+### Web Application Usage
+
+1. Start the development server: `npm run dev`
+2. Open [http://localhost:3000](http://localhost:3000) in your browser
+3. Upload your draw.io file (drag-and-drop or click to browse)
+4. Adjust duration (1-60 seconds) and FPS (1-30) using the sliders
+5. Click "Convert to GIF" and watch the progress
+6. Preview and download your animated GIF
 
 ## 🎨 Output Examples
 
@@ -141,12 +166,12 @@ Example: 5 seconds at 10 fps = **50 frames**
 
 ### Optimization Tips
 
-| Goal | Recommended Settings | Output |
-|------|---------------------|---------|
-| **Smallest file** | 3s @ 5fps | ~15 frames, 0.7-1.5 MB |
-| **Balanced** | 5s @ 10fps | ~50 frames, 2-5 MB |
-| **Smooth animation** | 5s @ 20fps | ~100 frames, 4-10 MB |
-| **Best quality** | 10s @ 25fps | ~250 frames, 10-25 MB |
+| Goal                 | Recommended Settings | Output                 |
+| -------------------- | -------------------- | ---------------------- |
+| **Smallest file**    | 3s @ 5fps            | ~15 frames, 0.7-1.5 MB |
+| **Balanced**         | 5s @ 10fps           | ~50 frames, 2-5 MB     |
+| **Smooth animation** | 5s @ 20fps           | ~100 frames, 4-10 MB   |
+| **Best quality**     | 10s @ 25fps          | ~250 frames, 10-25 MB  |
 
 **Processing time**: Approximately 1-2 seconds per second of recording
 
@@ -161,34 +186,55 @@ Example: 5 seconds at 10 fps = **50 frames**
 
 ```
 drawio-gif-creator/
-├── src/
-│   ├── index.js           # CLI entry point and argument parsing
-│   ├── converter.js       # Main conversion orchestration
-│   ├── fileReader.js      # Draw.io file reading and validation
-│   ├── renderer.js        # Puppeteer-based frame capture
-│   └── imageConverter.js  # Multi-frame GIF encoding
-├── sample.drawio          # Sample diagram file for testing
-├── result.gif             # Example output (generated from sample.drawio)
-├── Makefile               # Convenience commands
-├── package.json           # Dependencies and metadata
-├── .gitignore             # Git ignore rules
-└── README.md              # This file
+├── app/                    # Next.js web application
+│   ├── page.tsx           # Main page
+│   ├── layout.tsx         # Root layout
+│   └── api/convert/       # API endpoints
+├── components/            # React UI components
+│   ├── converter-form.tsx # Main form orchestrator
+│   ├── file-upload-card.tsx
+│   ├── conversion-settings-card.tsx
+│   ├── conversion-progress.tsx
+│   ├── preview-card.tsx
+│   └── ui/               # Radix UI components
+├── lib/                  # Shared utilities
+│   ├── converter.ts      # Web wrapper for CLI
+│   └── utils.ts          # Utility functions
+├── src/                  # CLI conversion engine
+│   ├── index.js          # CLI entry point
+│   ├── converter.js      # Core conversion logic
+│   ├── fileReader.js     # File reading and validation
+│   ├── renderer.js       # Puppeteer frame capture
+│   └── imageConverter.js # GIF encoding
+├── sample.drawio         # Sample diagram file
+├── result.gif            # Example output
+└── README.md             # This file
 ```
 
 ## 🔧 How It Works
+
+Both the web app and CLI tool use the same conversion engine:
 
 1. **📖 File Reading** - Reads and validates the draw.io XML file
 2. **🌐 Browser Launch** - Starts headless Chrome via Puppeteer
 3. **🎨 Diagram Loading** - Loads diagram in the diagrams.net viewer
 4. **📸 Frame Capture** - Takes screenshots at specified intervals
 5. **🎞️ GIF Encoding** - Converts PNG frames to animated GIF
-6. **💾 File Output** - Saves the final GIF to disk
+6. **💾 File Output** - Saves the final GIF (to disk for CLI, as download for web)
 
 ## 📦 Dependencies
 
+### Core Conversion Engine
 - **[puppeteer](https://github.com/puppeteer/puppeteer)** (^22.0.0) - Headless Chrome automation
 - **[sharp](https://github.com/lovell/sharp)** (^0.33.0) - High-performance image processing
 - **[gif-encoder-2](https://github.com/benjaminadk/gif-encoder-2)** (^1.0.5) - Pure JavaScript GIF encoder
+
+### Web Application
+- **[next](https://nextjs.org/)** (^15.5.4) - React framework with App Router
+- **[react](https://react.dev/)** (^19.2.0) - UI library
+- **[@radix-ui](https://www.radix-ui.com/)** - Headless UI components
+- **[tailwindcss](https://tailwindcss.com/)** (^4.1.14) - Utility-first CSS framework
+- **[lucide-react](https://lucide.dev/)** (^0.545.0) - Icon library
 
 ## 🐛 Troubleshooting
 
