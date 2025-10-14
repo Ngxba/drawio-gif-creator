@@ -1,7 +1,7 @@
 # 🎬 Draw.io to GIF Converter
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.17.0-brightgreen)](https://nodejs.org)
 
 A powerful command-line tool that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
 
@@ -20,7 +20,7 @@ Perfect for creating animated documentation, tutorials, presentations, or sharin
 
 ## 📋 Requirements
 
-- **Node.js** 16.0.0 or higher
+- **Node.js** 18.17.0 or higher (required by Sharp)
 - **npm** (comes with Node.js)
 
 ## 🚀 Quick Start
