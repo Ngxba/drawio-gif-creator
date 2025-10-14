@@ -11,6 +11,8 @@ A dual-interface application that converts [draw.io](https://draw.io) / [diagram
 
 Perfect for creating animated documentation, tutorials, presentations, or sharing your diagrams on platforms that support GIF animations!
 
+https://github.com/user-attachments/assets/a32ea65d-fbae-4af9-aedd-68b3861e573e
+
 ## ✨ Features
 
 - 🎥 **Animated GIF Creation** - Records the diagram loading process over time
