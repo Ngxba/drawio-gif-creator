@@ -15,7 +15,9 @@ async function convertDrawioToGif(inputFile, outputFile, duration = 5, fps = 10,
   try {
     // Step 1: Validate input file extension
     if (!inputFile.match(/\.(drawio|dio|xml)$/i)) {
-      throw new Error('Input file must be a draw.io file (.drawio, .dio, or .xml)');
+      throw new Error(
+        'Input file must be a draw.io file (.drawio, .dio, or .xml)'
+      );
     }
 
     // Step 2: Validate output file extension
@@ -39,7 +41,6 @@ async function convertDrawioToGif(inputFile, outputFile, duration = 5, fps = 10,
 
     // Step 6: Convert frames to animated GIF and save
     await convertToGif(frames, outputFile, fps);
-
   } catch (error) {
     // Re-throw with better context if needed
     if (error.message.includes('ENOENT')) {

@@ -6,6 +6,7 @@
 A dual-interface application that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
 
 **Two ways to use it:**
+
 - 💻 **Command-Line Tool** - Direct file conversion for automation and scripting
 - 🌐 **Web Application** - Modern Next.js UI with drag-and-drop file upload, real-time preview, and adjustable settings
 
@@ -179,7 +180,7 @@ Here's an example of what you can create with this tool:
 
 ![Example GIF Output](result.gif)
 
-*Generated from the included `sample.drawio` file*
+_Generated from the included `sample.drawio` file_
 
 The application produces animated GIFs that loop continuously:
 
@@ -290,6 +291,7 @@ Both the web app and CLI tool use the same conversion engine:
 - **[archiver](https://github.com/archiverjs/node-archiver)** (^7.0.1) - ZIP file creation for multi-page exports
 
 ### Web Application
+
 - **[next](https://nextjs.org/)** (^15.5.4) - React framework with App Router
 - **[react](https://react.dev/)** (^19.2.0) - UI library
 - **[@radix-ui](https://www.radix-ui.com/)** - Headless UI components
@@ -301,20 +303,24 @@ Both the web app and CLI tool use the same conversion engine:
 ### Common Issues
 
 **"File not found" error**
+
 - Verify the input file path is correct
 - Ensure the file has a `.drawio`, `.dio`, or `.xml` extension
 
 **"Rendering timeout" error**
+
 - Check your internet connection (required to access diagrams.net viewer)
 - Try increasing the duration parameter
 - Ensure the draw.io file is valid
 
 **Large file sizes**
+
 - Reduce FPS (e.g., from 15 to 8)
 - Shorten duration (e.g., from 10s to 5s)
 - Simplify your diagram if possible
 
 **Out of memory errors**
+
 - Reduce the total frame count (duration × fps)
 - Process smaller diagrams
 - Increase Node.js memory: `node --max-old-space-size=4096 src/index.js ...`
@@ -368,6 +374,7 @@ SOFTWARE.
 ## 🌟 Show Your Support
 
 If you find this project useful, please consider:
+
 - ⭐ Starring the repository
 - 🐛 Reporting bugs or requesting features via [Issues](https://github.com/ngxba/drawio-gif-creator/issues)
 - 🔀 Contributing improvements via Pull Requests

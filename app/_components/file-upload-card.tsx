@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { useRef } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Upload } from "lucide-react";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Upload } from 'lucide-react';
 
 interface FileUploadCardProps {
   file: File | null;
@@ -29,15 +29,15 @@ export function FileUploadCard({
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       // Validate file extension
-      const validExtensions = [".drawio", ".dio", ".xml"];
+      const validExtensions = ['.drawio', '.dio', '.xml'];
       const fileName = selectedFile.name.toLowerCase();
       const isValid = validExtensions.some((ext) => fileName.endsWith(ext));
 
       if (isValid) {
         onFileChange(selectedFile);
       } else {
-        alert("Please select a valid draw.io file (.drawio, .dio, or .xml)");
-        e.target.value = "";
+        alert('Please select a valid draw.io file (.drawio, .dio, or .xml)');
+        e.target.value = '';
       }
     }
   };

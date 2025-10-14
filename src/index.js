@@ -27,7 +27,9 @@ async function main() {
     console.error('Arguments:');
     console.error('  input-file.drawio   Path to the draw.io diagram file');
     console.error('  output-file.gif     Path for the output GIF file');
-    console.error('  duration            Recording duration in seconds (default: 5)');
+    console.error(
+      '  duration            Recording duration in seconds (default: 5)'
+    );
     console.error('  fps                 Frames per second (default: 10)');
     console.error('  page                Page index to export (default: 0, first page)');
     console.error('  --all               Export all pages (creates multiple files)');

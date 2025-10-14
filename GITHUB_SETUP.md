@@ -19,6 +19,7 @@ This document explains the GitHub workflows, pre-commit hooks, and contribution 
 ### Pull Request Template
 
 **`.github/pull_request_template.md`**
+
 - Auto-fills when creating PRs
 - Includes description, type of change, testing checklist
 - Ensures consistent PR format
@@ -26,6 +27,7 @@ This document explains the GitHub workflows, pre-commit hooks, and contribution 
 ### Pre-commit Configuration
 
 **`.pre-commit-config.yaml`**
+
 - Checks for trailing whitespace
 - Fixes end-of-file formatting
 - Validates YAML/JSON syntax
@@ -35,6 +37,7 @@ This document explains the GitHub workflows, pre-commit hooks, and contribution 
 ### Linting Setup
 
 **`.eslintrc.json`**
+
 - ESLint configuration for JavaScript
 - 2-space indentation
 - Single quotes for strings
@@ -66,6 +69,7 @@ npm run lint:fix
 Pre-commit hooks run automatically before each commit to catch issues early.
 
 **Setup:**
+
 ```bash
 # Install pre-commit (requires Python)
 pip install pre-commit
@@ -75,6 +79,7 @@ pre-commit install
 ```
 
 **Manual run:**
+
 ```bash
 # Run on all files
 pre-commit run --all-files
@@ -96,11 +101,13 @@ Once you push, you can view workflow runs at:
 `https://github.com/Ngxba/drawio-gif-creator/actions`
 
 ### CI Workflow
+
 - ✅ Runs automatically on every push/PR
 - Tests code on multiple Node.js versions
 - Ensures compatibility
 
 ### CodeQL Workflow
+
 - ✅ Scans for security issues
 - Runs weekly and on changes
 - GitHub Security tab will show results
@@ -143,6 +150,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 ### ESLint conflicts with Puppeteer dependencies
 
 If you see peer dependency warnings:
+
 ```bash
 npm install --legacy-peer-deps
 ```
