@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ### Prerequisites
 
-- Node.js 16.0.0 or higher
+- Node.js 18.17.0 or higher (required by Sharp)
 - npm
 - Git
 
