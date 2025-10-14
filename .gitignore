@@ -3,6 +3,7 @@ node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+bun.lock
 
 # Test files (keep test-diagram.drawio as it's part of the project)
 # But ignore any other test outputs
