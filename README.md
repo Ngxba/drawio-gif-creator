@@ -21,6 +21,8 @@ https://github.com/user-attachments/assets/a32ea65d-fbae-4af9-aedd-68b3861e573e
 - 🎯 **Clean Export** - No UI elements, just your diagram
 - 🚀 **Headless Rendering** - Uses Puppeteer for accurate browser-based rendering
 - 📦 **Multiple Formats** - Supports `.drawio`, `.dio`, and `.xml` files
+- 📄 **Multi-Page Support** - Export specific pages or all pages from multi-page diagrams
+- 🗜️ **Batch Export** - Export all pages as a convenient ZIP archive (Web UI)
 - 🛡️ **Error Handling** - Comprehensive error handling for reliable operation
 - 💻 **CLI Available** - Command-line interface for automation and scripting
 - 🔄 **Dual Interface** - Use the web app or CLI tool - same conversion engine
@@ -74,7 +76,7 @@ npm run dev
 #### Command Syntax
 
 ```bash
-node src/index.js <input-file> <output-file> [duration] [fps]
+node src/index.js <input-file> <output-file> [duration] [fps] [page|--all]
 ```
 
 #### Parameters
@@ -85,6 +87,8 @@ node src/index.js <input-file> <output-file> [duration] [fps]
 | `output-file` | Path for the output GIF file      | ✅ Yes    | -       | `.gif`                    |
 | `duration`    | Recording duration in seconds     | ❌ No     | 5       | 1-60                      |
 | `fps`         | Frames per second                 | ❌ No     | 10      | 1-30                      |
+| `page`        | Page index to export (0-based)    | ❌ No     | 0       | 0 to page count - 1       |
+| `--all`       | Export all pages                  | ❌ No     | -       | Creates multiple files    |
 
 #### CLI Examples
 
@@ -119,6 +123,53 @@ drawio-to-gif diagram.drawio output.gif 5 10
 4. Adjust duration (1-60 seconds) and FPS (1-30) using the sliders
 5. Click "Convert to GIF" and watch the progress
 6. Preview and download your animated GIF
+
+### Multi-Page Diagram Support
+
+Both the CLI and web application now support draw.io files with multiple pages!
+
+#### CLI Multi-Page Commands
+
+```bash
+# List all pages in a diagram
+node src/index.js --list-pages diagram.drawio
+
+# Export a specific page (0-based index)
+node src/index.js diagram.drawio output.gif 5 10 1
+
+# Export all pages (creates multiple files)
+node src/index.js diagram.drawio output.gif 5 10 --all
+```
+
+**Output for `--all` flag:**
+- `output-page0.gif` - First page
+- `output-page1.gif` - Second page
+- `output-page2.gif` - Third page
+- etc.
+
+#### Web UI Multi-Page Support
+
+When you upload a multi-page draw.io file to the web application:
+
+1. **Page Selector** - A dropdown appears showing all available pages
+2. **Export All Checkbox** - Check to export all pages at once
+3. **ZIP Download** - When exporting all pages, you'll receive a ZIP file containing individual GIF files for each page
+
+**Features:**
+- 📄 Automatic page detection
+- 🎯 Select specific pages to export
+- 📦 Export all pages as a ZIP archive
+- 🏷️ Page names preserved in output filenames
+
+**Example:**
+```
+Diagram with pages: "Architecture", "Flow", "Database"
+
+Export All creates: diagram-all.zip containing:
+  ├── Architecture-page0.gif
+  ├── Flow-page1.gif
+  └── Database-page2.gif
+```
 
 ## 🎨 Output Examples
 
@@ -191,24 +242,30 @@ drawio-gif-creator/
 ├── app/                    # Next.js web application
 │   ├── page.tsx           # Main page
 │   ├── layout.tsx         # Root layout
-│   └── api/convert/       # API endpoints
+│   └── api/
+│       ├── convert/       # Conversion API endpoint
+│       └── list-pages/    # Page listing API endpoint
 ├── components/            # React UI components
 │   ├── converter-form.tsx # Main form orchestrator
 │   ├── file-upload-card.tsx
 │   ├── conversion-settings-card.tsx
 │   ├── conversion-progress.tsx
 │   ├── preview-card.tsx
-│   └── ui/               # Radix UI components
+│   └── ui/               # UI components
+│       ├── select.tsx    # Page selector dropdown
+│       ├── checkbox.tsx  # Export all checkbox
+│       └── ...           # Other Radix UI components
 ├── lib/                  # Shared utilities
 │   ├── converter.ts      # Web wrapper for CLI
+│   ├── page-lister.ts    # Page detection utility
 │   └── utils.ts          # Utility functions
 ├── src/                  # CLI conversion engine
 │   ├── index.js          # CLI entry point
 │   ├── converter.js      # Core conversion logic
-│   ├── fileReader.js     # File reading and validation
+│   ├── fileReader.js     # File reading and page detection
 │   ├── renderer.js       # Puppeteer frame capture
 │   └── imageConverter.js # GIF encoding
-├── sample.drawio         # Sample diagram file
+├── sample.drawio         # Sample diagram file (multi-page)
 ├── result.gif            # Example output
 └── README.md             # This file
 ```
@@ -227,9 +284,10 @@ Both the web app and CLI tool use the same conversion engine:
 ## 📦 Dependencies
 
 ### Core Conversion Engine
-- **[puppeteer](https://github.com/puppeteer/puppeteer)** (^22.0.0) - Headless Chrome automation
+- **[puppeteer](https://github.com/puppeteer/puppeteer)** (^24.0.0) - Headless Chrome automation
 - **[sharp](https://github.com/lovell/sharp)** (^0.33.0) - High-performance image processing
 - **[gif-encoder-2](https://github.com/benjaminadk/gif-encoder-2)** (^1.0.5) - Pure JavaScript GIF encoder
+- **[archiver](https://github.com/archiverjs/node-archiver)** (^7.0.1) - ZIP file creation for multi-page exports
 
 ### Web Application
 - **[next](https://nextjs.org/)** (^15.5.4) - React framework with App Router
