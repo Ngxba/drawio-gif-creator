@@ -39,15 +39,56 @@ async function readDrawioFile(filePath) {
  * Extracts the diagram XML from a draw.io file
  * Draw.io files can be plain XML or compressed/encoded
  * @param {string} xmlContent - Raw file content
+ * @param {number} pageIndex - Index of the page to extract (0-based, default: 0)
  * @returns {string} The diagram XML
  */
-function extractDiagramXml(xmlContent) {
+function extractDiagramXml(xmlContent, pageIndex = 0) {
   // For most draw.io files, the XML is already in usable format
   // The draw.io viewer can handle the various formats
   return xmlContent;
 }
 
+/**
+ * Lists all pages/sheets in a draw.io file
+ * @param {string} xmlContent - Raw file content
+ * @returns {Array<{index: number, name: string, id: string}>} Array of page info
+ */
+function listPages(xmlContent) {
+  try {
+    // Parse XML to find all diagram elements (handle multiline)
+    // The pattern needs to handle both name and id in any order
+    const diagramPattern = /<diagram[^>]*>/g;
+    const matches = xmlContent.match(diagramPattern);
+    const pages = [];
+
+    if (matches) {
+      matches.forEach((tag, index) => {
+        // Extract name and id from the tag
+        const nameMatch = tag.match(/name="([^"]*)"/);
+        const idMatch = tag.match(/id="([^"]*)"/);
+
+        pages.push({
+          index: index,
+          name: nameMatch ? nameMatch[1] : `Page ${index + 1}`,
+          id: idMatch ? idMatch[1] : `page-${index}`
+        });
+      });
+    }
+
+    // If no diagrams found, return default
+    if (pages.length === 0) {
+      return [{ index: 0, name: 'Page 1', id: 'default' }];
+    }
+
+    return pages;
+  } catch (error) {
+    // Fallback to single page
+    return [{ index: 0, name: 'Page 1', id: 'default' }];
+  }
+}
+
 module.exports = {
   readDrawioFile,
-  extractDiagramXml
+  extractDiagramXml,
+  listPages
 };

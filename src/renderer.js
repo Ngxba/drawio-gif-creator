@@ -5,9 +5,10 @@ const puppeteer = require('puppeteer');
  * @param {string} xmlContent - The draw.io XML content
  * @param {number} duration - Recording duration in seconds (default: 5)
  * @param {number} fps - Frames per second to capture (default: 10)
+ * @param {number} pageIndex - Index of the page to render (0-based, default: 0)
  * @returns {Promise<Array<Buffer>>} Array of PNG frame buffers
  */
-async function renderDiagram(xmlContent, duration = 5, fps = 10) {
+async function renderDiagram(xmlContent, duration = 5, fps = 10, pageIndex = 0) {
   let browser = null;
 
   try {
@@ -27,7 +28,8 @@ async function renderDiagram(xmlContent, duration = 5, fps = 10) {
 
     // Encode the diagram for the URL
     const encodedXml = encodeURIComponent(xmlContent);
-    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&title=diagram#R${encodedXml}`;
+    // Add page parameter to select specific page (0-based index)
+    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=${pageIndex}&title=diagram#R${encodedXml}`;
 
     // Navigate to the viewer
     await page.goto(viewerUrl, {

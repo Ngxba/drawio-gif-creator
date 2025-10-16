@@ -18,19 +18,25 @@ const execPromise = promisify(exec);
  * @param outputPath - Path where the output GIF should be saved
  * @param duration - Duration of the animation in seconds (1-60)
  * @param fps - Frames per second (1-30)
+ * @param pageIndex - Index of the page to export (0-based, default: 0)
  * @returns Promise that resolves when conversion is complete
  */
 export async function convertDrawioToGif(
   inputPath: string,
   outputPath: string,
   duration: number = 5,
-  fps: number = 10
+  fps: number = 10,
+  pageIndex: number = 0
 ): Promise<void> {
   // Path to the CLI converter (in the same project)
   const converterPath = resolve(process.cwd(), "src/index.js");
 
-  // Build the command
-  const command = `node "${converterPath}" "${inputPath}" "${outputPath}" ${duration} ${fps}`;
+  // Build the command with page index
+  let command = `node "${converterPath}" "${inputPath}" "${outputPath}" ${duration} ${fps}`;
+
+  if (pageIndex > 0) {
+    command += ` ${pageIndex}`;
+  }
 
   try {
     const { stdout, stderr } = await execPromise(command, {
