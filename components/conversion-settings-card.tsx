@@ -7,35 +7,104 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Select } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+
+interface PageInfo {
+  index: number;
+  name: string;
+  id: string;
+}
 
 interface ConversionSettings {
   duration: number;
   fps: number;
+  pageIndex: number;
+  exportAll: boolean;
 }
 
 interface ConversionSettingsCardProps {
   settings: ConversionSettings;
   onSettingsChange: (settings: ConversionSettings) => void;
   disabled?: boolean;
+  pages?: PageInfo[];
+  isLoadingPages?: boolean;
 }
 
 export function ConversionSettingsCard({
   settings,
   onSettingsChange,
   disabled = false,
+  pages = [],
+  isLoadingPages = false,
 }: ConversionSettingsCardProps) {
   const totalFrames = settings.duration * settings.fps;
   const estimatedSize = ((totalFrames * 50) / 1024).toFixed(1);
+  const hasMultiplePages = pages.length > 1;
 
   return (
     <Card className="bg-white border-neutral-200">
       <CardHeader>
         <CardTitle className="text-neutral-900">Conversion Settings</CardTitle>
         <CardDescription className="text-neutral-600">
-          Adjust duration and frame rate for the animated GIF
+          Adjust duration, frame rate, and page selection
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Page Selection - Only show if file is uploaded */}
+        {pages.length > 0 && (
+          <>
+            <div className="space-y-3 flex flex-col">
+              <Label htmlFor="page-select" className="text-neutral-700 font-medium">
+                Page Selection
+              </Label>
+              <Select
+                id="page-select"
+                value={settings.pageIndex.toString()}
+                onChange={(e) =>
+                  onSettingsChange({
+                    ...settings,
+                    pageIndex: parseInt(e.target.value, 10),
+                  })
+                }
+                disabled={disabled || isLoadingPages || settings.exportAll}
+              >
+                {isLoadingPages ? (
+                  <option>Loading pages...</option>
+                ) : (
+                  pages.map((page) => (
+                    <option key={page.id} value={page.index}>
+                      {page.name}
+                    </option>
+                  ))
+                )}
+              </Select>
+            </div>
+
+            {/* Export All Pages Checkbox - Only show if multiple pages exist */}
+            {hasMultiplePages && (
+              <div className="space-y-2">
+                <Checkbox
+                  id="export-all"
+                  label="Export all pages"
+                  checked={settings.exportAll}
+                  onChange={(e) =>
+                    onSettingsChange({
+                      ...settings,
+                      exportAll: e.target.checked,
+                    })
+                  }
+                  disabled={disabled || isLoadingPages}
+                />
+                {settings.exportAll && (
+                  <p className="text-xs text-neutral-600 ml-6">
+                    Will create a ZIP file containing separate GIF files for each page
+                  </p>
+                )}
+              </div>
+            )}
+          </>
+        )}
         {/* Duration Slider */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
