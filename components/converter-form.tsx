@@ -1,120 +1,65 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { FileUploadCard } from "@/components/file-upload-card";
 import { ConversionSettingsCard } from "@/components/conversion-settings-card";
 import { PreviewPanel } from "@/components/preview-panel";
 import { ActionButtons } from "@/components/action-buttons";
 import { downloadFile, generateOutputFileName } from "@/lib/download-utils";
+import { useFetchPages } from "@/lib/hooks/useFetchPages";
+import {
+  useConvertDiagram,
+  type ConversionSettings,
+} from "@/lib/hooks/useConvertDiagram";
 
-interface PageInfo {
-  index: number;
-  name: string;
-  id: string;
-}
-
-interface ConversionSettings {
-  duration: number;
-  fps: number;
-  pageIndex: number;
-  exportAll: boolean;
-}
+const DEFAULT_SETTINGS: ConversionSettings = {
+  duration: 5,
+  fps: 10,
+  pageIndex: 0,
+  exportAll: false,
+};
 
 export function ConverterForm() {
   const [file, setFile] = useState<File | null>(null);
-  const [settings, setSettings] = useState<ConversionSettings>({
-    duration: 5,
-    fps: 10,
-    pageIndex: 0,
-    exportAll: false,
-  });
-  const [pages, setPages] = useState<PageInfo[]>([]);
-  const [isLoadingPages, setIsLoadingPages] = useState(false);
-  const [isConverting, setIsConverting] = useState(false);
+  const [settings, setSettings] =
+    useState<ConversionSettings>(DEFAULT_SETTINGS);
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
 
-  const handleFileChange = (newFile: File | null) => {
+  const { data: pages, isLoading: isLoadingPages } = useFetchPages(file);
+  const { mutateAsync: convertDiagram, isPending: isConverting } =
+    useConvertDiagram();
+
+  const handleFileChange = useCallback((newFile: File | null) => {
     setFile(newFile);
     setOutputUrl(null);
-    setPages([]);
-    setSettings(prev => ({ ...prev, pageIndex: 0, exportAll: false }));
-  };
+    setSettings((prev) => ({ ...prev, pageIndex: 0, exportAll: false }));
+  }, []);
 
-  // Fetch pages when file changes
-  useEffect(() => {
-    if (!file) {
-      setPages([]);
-      return;
-    }
-
-    const fetchPages = async () => {
-      setIsLoadingPages(true);
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        const response = await fetch('/api/list-pages', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setPages(data.pages || []);
-        } else {
-          console.error('Failed to fetch pages');
-          setPages([{ index: 0, name: 'Page 1', id: 'default' }]);
-        }
-      } catch (error) {
-        console.error('Error fetching pages:', error);
-        setPages([{ index: 0, name: 'Page 1', id: 'default' }]);
-      } finally {
-        setIsLoadingPages(false);
-      }
-    };
-
-    fetchPages();
-  }, [file]);
-
-  const handleConvert = async () => {
+  const handleConvert = useCallback(async () => {
     if (!file) return;
 
-    setIsConverting(true);
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("duration", settings.duration.toString());
-    formData.append("fps", settings.fps.toString());
-    formData.append("pageIndex", settings.pageIndex.toString());
-    formData.append("exportAll", settings.exportAll.toString());
-
     try {
-      const response = await fetch("/api/convert", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Conversion failed");
-      }
-
-      const blob = await response.blob();
+      const blob = await convertDiagram({ file, settings });
       const url = URL.createObjectURL(blob);
-
       setOutputUrl(url);
-      setIsConverting(false);
 
       // If exporting all pages, automatically trigger download of zip
       if (settings.exportAll) {
-        const outputFileName = file.name.replace(/\.(drawio|dio|xml)$/, "-all.zip");
+        const outputFileName = file.name.replace(
+          /\.(drawio|dio|xml)$/,
+          "-all.zip"
+        );
         downloadFile(url, outputFileName);
       }
     } catch (error) {
-      console.error("Conversion error:", error);
-      alert("Failed to convert diagram. Please try again.");
-      setIsConverting(false);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to convert diagram. Please try again.";
+      console.error("Conversion error:", errorMessage);
+      alert(errorMessage);
     }
-  };
+  }, [file, settings, convertDiagram]);
 
   const handleDownload = () => {
     if (!outputUrl) return;

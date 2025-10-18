@@ -7,7 +7,15 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface PageInfo {
@@ -55,52 +63,67 @@ export function ConversionSettingsCard({
         {pages.length > 0 && (
           <>
             <div className="space-y-3 flex flex-col">
-              <Label htmlFor="page-select" className="text-neutral-700 font-medium">
+              <Label
+                htmlFor="page-select"
+                className="text-neutral-700 font-medium"
+              >
                 Page Selection
               </Label>
               <Select
-                id="page-select"
                 value={settings.pageIndex.toString()}
-                onChange={(e) =>
+                onValueChange={(value) =>
                   onSettingsChange({
                     ...settings,
-                    pageIndex: parseInt(e.target.value, 10),
+                    pageIndex: parseInt(value, 10),
                   })
                 }
                 disabled={disabled || isLoadingPages || settings.exportAll}
               >
-                {isLoadingPages ? (
-                  <option>Loading pages...</option>
-                ) : (
-                  pages.map((page) => (
-                    <option key={page.id} value={page.index}>
-                      {page.name}
-                    </option>
-                  ))
-                )}
+                <SelectTrigger id="page-select">
+                  <SelectValue placeholder="Select a page" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Select a page</SelectLabel>
+                    {isLoadingPages ? (
+                      <SelectItem value="loading" disabled>
+                        Loading pages...
+                      </SelectItem>
+                    ) : (
+                      pages.map((page) => (
+                        <SelectItem key={page.id} value={page.index.toString()}>
+                          {page.name}
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectGroup>
+                </SelectContent>
               </Select>
             </div>
 
             {/* Export All Pages Checkbox - Only show if multiple pages exist */}
             {hasMultiplePages && (
-              <div className="space-y-2">
+              <div className="flex items-start gap-3">
                 <Checkbox
                   id="export-all"
-                  label="Export all pages"
                   checked={settings.exportAll}
-                  onChange={(e) =>
+                  onCheckedChange={(checked) =>
                     onSettingsChange({
                       ...settings,
-                      exportAll: e.target.checked,
+                      exportAll: checked === true,
                     })
                   }
                   disabled={disabled || isLoadingPages}
                 />
-                {settings.exportAll && (
-                  <p className="text-xs text-neutral-600 ml-6">
-                    Will create a ZIP file containing separate GIF files for each page
+                <div className="grid gap-2">
+                  <Label htmlFor="export-all" className="font-medium cursor-pointer">
+                    Export all pages
+                  </Label>
+                  <p className="text-xs text-neutral-600">
+                    Will create a ZIP file containing separate GIF files for
+                    each page
                   </p>
-                )}
+                </div>
               </div>
             )}
           </>
