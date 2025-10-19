@@ -5,9 +5,9 @@
  * draw.io to GIF converter CLI tool.
  */
 
-import { exec } from "child_process";
-import { promisify } from "util";
-import { resolve } from "path";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { resolve } from 'path';
 
 const execPromise = promisify(exec);
 
@@ -18,19 +18,25 @@ const execPromise = promisify(exec);
  * @param outputPath - Path where the output GIF should be saved
  * @param duration - Duration of the animation in seconds (1-60)
  * @param fps - Frames per second (1-30)
+ * @param pageIndex - Index of the page to export (0-based, default: 0)
  * @returns Promise that resolves when conversion is complete
  */
 export async function convertDrawioToGif(
   inputPath: string,
   outputPath: string,
   duration: number = 5,
-  fps: number = 10
+  fps: number = 10,
+  pageIndex: number = 0
 ): Promise<void> {
   // Path to the CLI converter (in the same project)
-  const converterPath = resolve(process.cwd(), "src/index.js");
+  const converterPath = resolve(process.cwd(), 'src/index.js');
 
-  // Build the command
-  const command = `node "${converterPath}" "${inputPath}" "${outputPath}" ${duration} ${fps}`;
+  // Build the command with page index
+  let command = `node "${converterPath}" "${inputPath}" "${outputPath}" ${duration} ${fps}`;
+
+  if (pageIndex > 0) {
+    command += ` ${pageIndex}`;
+  }
 
   try {
     const { stdout, stderr } = await execPromise(command, {
@@ -38,12 +44,12 @@ export async function convertDrawioToGif(
       maxBuffer: 10 * 1024 * 1024, // 10MB buffer
     });
 
-    if (stderr && !stderr.includes("Warning")) {
-      console.error("Converter stderr:", stderr);
+    if (stderr && !stderr.includes('Warning')) {
+      console.error('Converter stderr:', stderr);
     }
 
     if (stdout) {
-      console.log("Converter stdout:", stdout);
+      console.log('Converter stdout:', stdout);
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -62,15 +68,15 @@ export async function convertDrawioToGif(
  */
 export function validateConversionParams(duration: number, fps: number): void {
   if (duration < 1 || duration > 60) {
-    throw new Error("Duration must be between 1 and 60 seconds");
+    throw new Error('Duration must be between 1 and 60 seconds');
   }
 
   if (fps < 1 || fps > 30) {
-    throw new Error("FPS must be between 1 and 30");
+    throw new Error('FPS must be between 1 and 30');
   }
 
   if (!Number.isInteger(duration) || !Number.isInteger(fps)) {
-    throw new Error("Duration and FPS must be integers");
+    throw new Error('Duration and FPS must be integers');
   }
 }
 
@@ -81,7 +87,7 @@ export function validateConversionParams(duration: number, fps: number): void {
  * @returns true if the file has a valid extension
  */
 export function isValidDrawioFile(filename: string): boolean {
-  const validExtensions = [".drawio", ".dio", ".xml"];
+  const validExtensions = ['.drawio', '.dio', '.xml'];
   const lowerName = filename.toLowerCase();
   return validExtensions.some((ext) => lowerName.endsWith(ext));
 }

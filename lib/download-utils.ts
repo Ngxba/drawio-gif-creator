@@ -4,7 +4,7 @@
  * @param filename - The name to give the downloaded file
  */
 export function downloadFile(url: string, filename: string): void {
-  const link = document.createElement("a");
+  const link = document.createElement('a');
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
@@ -18,6 +18,6 @@ export function downloadFile(url: string, filename: string): void {
  * @returns The output filename with .gif extension
  */
 export function generateOutputFileName(inputFileName?: string): string {
-  if (!inputFileName) return "output.gif";
-  return inputFileName.replace(/\.(drawio|dio|xml)$/, ".gif");
+  if (!inputFileName) return 'output.gif';
+  return inputFileName.replace(/\.(drawio|dio|xml)$/, '.gif');
 }

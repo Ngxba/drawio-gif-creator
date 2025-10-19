@@ -12,7 +12,7 @@ repos:
       - id: check-yaml
       - id: check-json
       - id: check-added-large-files
-        args: ['--maxkb=5000']  # Prevent large files (>5MB)
+        args: ['--maxkb=5000'] # Prevent large files (>5MB)
       - id: mixed-line-ending
       - id: check-merge-conflict
 

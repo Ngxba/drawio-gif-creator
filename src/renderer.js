@@ -5,15 +5,21 @@ const puppeteer = require('puppeteer');
  * @param {string} xmlContent - The draw.io XML content
  * @param {number} duration - Recording duration in seconds (default: 5)
  * @param {number} fps - Frames per second to capture (default: 10)
+ * @param {number} pageIndex - Index of the page to render (0-based, default: 0)
  * @returns {Promise<Array<Buffer>>} Array of PNG frame buffers
  */
-async function renderDiagram(xmlContent, duration = 5, fps = 10) {
+async function renderDiagram(
+  xmlContent,
+  duration = 5,
+  fps = 10,
+  pageIndex = 0
+) {
   let browser = null;
 
   try {
     browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
@@ -22,24 +28,25 @@ async function renderDiagram(xmlContent, duration = 5, fps = 10) {
     await page.setViewport({
       width: 1200,
       height: 1000,
-      deviceScaleFactor: 1 // Lower for better performance with animation
+      deviceScaleFactor: 1, // Lower for better performance with animation
     });
 
     // Encode the diagram for the URL
     const encodedXml = encodeURIComponent(xmlContent);
-    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&title=diagram#R${encodedXml}`;
+    // Add page parameter to select specific page (0-based index)
+    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=${pageIndex}&title=diagram#R${encodedXml}`;
 
     // Navigate to the viewer
     await page.goto(viewerUrl, {
       waitUntil: 'networkidle2',
-      timeout: 30000
+      timeout: 30000,
     });
 
     // Wait for the diagram to render - look for the diagram container
     await page.waitForSelector('.geDiagramContainer', { timeout: 15000 });
 
     // Give it a moment to start rendering
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Find the diagram element and get its bounding box
     const diagramElement = await page.$('.geDiagramContainer');
@@ -61,7 +68,7 @@ async function renderDiagram(xmlContent, duration = 5, fps = 10) {
       x: Math.max(0, boundingBox.x - padding),
       y: Math.max(0, boundingBox.y - padding),
       width: boundingBox.width + padding * 2,
-      height: boundingBox.height + padding * 2
+      height: boundingBox.height + padding * 2,
     };
 
     // Capture frames over the duration
@@ -69,24 +76,25 @@ async function renderDiagram(xmlContent, duration = 5, fps = 10) {
     const frameInterval = 1000 / fps; // milliseconds per frame
     const totalFrames = duration * fps;
 
-    console.log(`Recording ${totalFrames} frames at ${fps} fps for ${duration} seconds...`);
+    console.log(
+      `Recording ${totalFrames} frames at ${fps} fps for ${duration} seconds...`
+    );
 
     for (let i = 0; i < totalFrames; i++) {
       const screenshot = await page.screenshot({
         type: 'png',
-        clip: clipRegion
+        clip: clipRegion,
       });
 
       frames.push(screenshot);
 
       // Wait for next frame
       if (i < totalFrames - 1) {
-        await new Promise(resolve => setTimeout(resolve, frameInterval));
+        await new Promise((resolve) => setTimeout(resolve, frameInterval));
       }
     }
 
     return frames;
-
   } catch (error) {
     if (error.name === 'TimeoutError') {
       throw new Error('Rendering timeout: diagram took too long to render');
@@ -100,5 +108,5 @@ async function renderDiagram(xmlContent, duration = 5, fps = 10) {
 }
 
 module.exports = {
-  renderDiagram
+  renderDiagram,
 };
