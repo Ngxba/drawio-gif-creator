@@ -1,10 +1,10 @@
 export function PreviewPlaceholder() {
   return (
-    <div className="bg-white border-neutral-200 rounded-lg p-12 flex flex-col items-center justify-center border-2 border-dashed flex-1">
+    <div className="bg-card border-border rounded-lg p-12 flex flex-col items-center justify-center border-2 border-dashed flex-1">
       <div className="text-center space-y-3">
-        <div className="w-16 h-16 mx-auto bg-neutral-100 rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto bg-secondary dark:bg-muted rounded-full flex items-center justify-center">
           <svg
-            className="w-8 h-8 text-neutral-600"
+            className="w-8 h-8 text-muted-foreground"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -17,8 +17,8 @@ export function PreviewPlaceholder() {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-neutral-700">Preview Area</h3>
-        <p className="text-sm text-neutral-500 max-w-sm">
+        <h3 className="text-lg font-semibold text-foreground">Preview Area</h3>
+        <p className="text-sm text-muted-foreground max-w-sm">
           Upload a draw.io file and click convert to see your animated GIF here
         </p>
       </div>
