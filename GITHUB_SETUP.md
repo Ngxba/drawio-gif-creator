@@ -24,24 +24,22 @@ This document explains the GitHub workflows, pre-commit hooks, and contribution 
 - Includes description, type of change, testing checklist
 - Ensures consistent PR format
 
-### Pre-commit Configuration
+### Pre-commit Hooks (Git Hooks)
 
-**`.pre-commit-config.yaml`**
+**`.husky/pre-commit`**
 
-- Checks for trailing whitespace
-- Fixes end-of-file formatting
-- Validates YAML/JSON syntax
-- Prevents large files (>5MB)
-- Runs ESLint with auto-fix
+- Runs `lint-staged` automatically before each commit
+- Auto-formats code with Prettier
+- Auto-fixes linting errors with oxlint
+- Aborts commit if unfixable lint errors remain
 
-### Linting Setup
+### Code Quality Tools
 
-**`.eslintrc.json`**
+**`package.json` - lint-staged configuration**
 
-- ESLint configuration for JavaScript
-- 2-space indentation
-- Single quotes for strings
-- Semicolons required
+- Prettier: Formats `.{js,jsx,ts,tsx,json,css,md,yml,yaml}` files
+- oxlint: Lints and fixes `.{js,jsx,ts,tsx}` files, then validates for remaining errors
+- Configuration prevents commits with unfixable linting issues
 
 ## 🚀 Quick Start for Contributors
 
@@ -54,41 +52,40 @@ cd drawio-gif-creator
 npm install
 ```
 
-### Run Linting
+### Run Code Quality Checks
 
 ```bash
-# Check for issues
+# Check code formatting
+npm run format:check
+
+# Check for linting errors
 npm run lint
 
-# Auto-fix issues
+# Auto-fix linting errors
 npm run lint:fix
+
+# Auto-format code with Prettier
+npm run format
+
+# Run all checks (format + lint)
+npm run check
 ```
 
-### Pre-commit Hooks (Optional)
+### Git Hooks (Automatic)
 
-Pre-commit hooks run automatically before each commit to catch issues early.
-
-**Setup:**
+Git hooks are **automatically set up** when you install dependencies:
 
 ```bash
-# Install pre-commit (requires Python)
-pip install pre-commit
-
-# Install git hooks
-pre-commit install
+npm install
 ```
 
-**Manual run:**
+The `.husky/pre-commit` hook runs automatically before each commit:
 
-```bash
-# Run on all files
-pre-commit run --all-files
+- Auto-formats staged files with Prettier
+- Auto-fixes staged files with oxlint
+- **Aborts commit if unfixable linting errors remain**
 
-# Run on staged files only
-pre-commit run
-```
-
-### Skip Pre-commit (if needed)
+### Skip Git Hooks (if needed)
 
 ```bash
 # Only use when absolutely necessary
@@ -120,25 +117,27 @@ Once you push, you can view workflow runs at:
 # Update all dependencies
 npm update
 
-# Update ESLint
-npm install --save-dev eslint@latest --legacy-peer-deps
+# Update specific tools
+npm install --save-dev oxlint@latest prettier@latest
 ```
 
-### Updating Pre-commit Hooks
+### Reinstalling Git Hooks
 
 ```bash
-# Auto-update to latest versions
-pre-commit autoupdate
+# Reinstall Husky hooks
+npx husky install
 
-# Test the updates
-pre-commit run --all-files
+# Verify hooks are set up
+ls -la .husky/
 ```
 
 ## 📚 Additional Resources
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Pre-commit Framework](https://pre-commit.com/)
-- [ESLint Documentation](https://eslint.org/docs/latest/)
+- [Husky Documentation](https://typicode.github.io/husky/)
+- [lint-staged Documentation](https://github.com/okonet/lint-staged)
+- [Prettier Documentation](https://prettier.io/docs/en/)
+- [Oxlint Documentation](https://oxc-project.github.io/docs/guide/usage.html)
 - [CodeQL Security Scanning](https://codeql.github.com/)
 
 ## 🤝 Contributing
@@ -147,22 +146,42 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## ❓ Common Issues
 
-### ESLint conflicts with Puppeteer dependencies
+### Git hooks not running on commit
 
-If you see peer dependency warnings:
+If pre-commit hooks don't run automatically:
 
 ```bash
-npm install --legacy-peer-deps
+# Reinstall Husky hooks
+npx husky install
+
+# Verify hooks are set up
+cat .husky/pre-commit
 ```
 
-### Pre-commit hooks failing
+### Commit blocked due to linting errors
 
-1. Check Python installation: `python --version` or `python3 --version`
-2. Reinstall: `pip install --upgrade pre-commit`
-3. Reinstall hooks: `pre-commit install`
+The commit will abort if unfixable linting errors exist after auto-fix. To resolve:
+
+1. Review the error message from oxlint
+2. Fix the issues manually (they cannot be auto-fixed)
+3. Stage the files again: `git add .`
+4. Retry the commit
+
+### Husky not initialized
+
+If `.husky/` directory doesn't exist:
+
+```bash
+# Reinstall dependencies (triggers Husky setup)
+npm install
+
+# Or manually initialize Husky
+npx husky install
+```
 
 ### GitHub Actions not running
 
 - Check `.github/workflows/` files are in the repository
 - Ensure workflows have correct YAML syntax
 - Check Actions tab for error messages
+- Verify branch protection rules aren't blocking runs
