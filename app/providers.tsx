@@ -2,6 +2,13 @@
 
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// oxlint-disable-next-line no-named-as-default
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { TextPlugin } from 'gsap/TextPlugin';
+import { ThemeProvider } from 'next-themes';
+
+gsap.registerPlugin(useGSAP, TextPlugin);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,6 +23,8 @@ const queryClient = new QueryClient({
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ThemeProvider>
   );
 }

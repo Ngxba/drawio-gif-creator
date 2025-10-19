@@ -54,10 +54,10 @@ export function ConversionSettingsCard({
   const hasMultiplePages = pages.length > 1;
 
   return (
-    <Card className="bg-white border-neutral-200">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-neutral-900">Conversion Settings</CardTitle>
-        <CardDescription className="text-neutral-600">
+        <CardTitle>Conversion Settings</CardTitle>
+        <CardDescription>
           Adjust duration, frame rate, and page selection
         </CardDescription>
       </CardHeader>
@@ -65,10 +65,7 @@ export function ConversionSettingsCard({
         {hasMultiplePages && (
           <>
             <div className="space-y-3">
-              <Label
-                htmlFor="page-select"
-                className="text-neutral-700 font-medium"
-              >
+              <Label htmlFor="page-select" className="font-medium">
                 Page Selection
               </Label>
               <Select
@@ -116,7 +113,7 @@ export function ConversionSettingsCard({
                 >
                   Export all pages
                 </Label>
-                <p className="text-xs text-neutral-600">
+                <p className="text-xs text-muted-foreground">
                   Will create a ZIP file containing separate GIF files for each
                   page
                 </p>
@@ -147,14 +144,12 @@ export function ConversionSettingsCard({
           disabled={disabled}
         />
 
-        <div className="rounded-lg bg-neutral-100 border border-neutral-200 p-4">
-          <p className="text-sm text-neutral-700 font-medium">
-            Total frames:{' '}
-            <span className="text-neutral-900">{totalFrames}</span>
+        <div className="rounded-lg bg-secondary dark:bg-muted border border-border p-4">
+          <p className="text-sm text-foreground font-medium">
+            Total frames: <span>{totalFrames}</span>
           </p>
-          <p className="text-sm text-neutral-700 font-medium">
-            Estimated size:{' '}
-            <span className="text-neutral-900">{estimatedSize} MB</span>
+          <p className="text-sm text-foreground font-medium">
+            Estimated size: <span>{estimatedSize} MB</span>
           </p>
         </div>
       </CardContent>
