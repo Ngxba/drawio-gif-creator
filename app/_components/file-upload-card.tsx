@@ -16,12 +16,18 @@ interface FileUploadCardProps {
   file: File | null;
   onFileChange: (file: File | null) => void;
   disabled?: boolean;
+  acceptedExtensions?: string[];
+  validationMessage?: string;
+  cardTitle?: string;
 }
 
 export function FileUploadCard({
   file,
   onFileChange,
   disabled = false,
+  acceptedExtensions = ['.drawio', '.dio', '.xml'],
+  validationMessage = 'Please select a valid draw.io file (.drawio, .dio, or .xml)',
+  cardTitle = 'Upload Diagram',
 }: FileUploadCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,25 +35,26 @@ export function FileUploadCard({
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       // Validate file extension
-      const validExtensions = ['.drawio', '.dio', '.xml'];
       const fileName = selectedFile.name.toLowerCase();
-      const isValid = validExtensions.some((ext) => fileName.endsWith(ext));
+      const isValid = acceptedExtensions.some((ext) => fileName.endsWith(ext));
 
       if (isValid) {
         onFileChange(selectedFile);
       } else {
-        alert('Please select a valid draw.io file (.drawio, .dio, or .xml)');
+        alert(validationMessage);
         e.target.value = '';
       }
     }
   };
 
+  const acceptAttribute = acceptedExtensions.join(',');
+
   return (
     <Card className="bg-white border-neutral-200">
       <CardHeader>
-        <CardTitle className="text-neutral-900">Upload Diagram</CardTitle>
+        <CardTitle className="text-neutral-900">{cardTitle}</CardTitle>
         <CardDescription className="text-neutral-600">
-          Select a draw.io file (.drawio, .dio, or .xml) to convert
+          {validationMessage}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -56,7 +63,7 @@ export function FileUploadCard({
             <Input
               ref={fileInputRef}
               type="file"
-              accept=".drawio,.dio,.xml"
+              accept={acceptAttribute}
               onChange={handleFileChange}
               className="flex-1"
               disabled={disabled}

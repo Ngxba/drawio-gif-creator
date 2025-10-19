@@ -41,10 +41,10 @@ pre-commit install
 
 ```bash
 # Test with sample file
-node src/index.js sample.drawio output.gif
+node src/index.js samples/sample.drawio output.gif
 
 # With custom settings
-node src/index.js sample.drawio output.gif 5 10
+node src/index.js samples/sample.drawio output.gif 5 10
 ```
 
 ### Code Quality
@@ -116,16 +116,16 @@ Test with various scenarios:
 
 ```bash
 # Different durations
-node src/index.js sample.drawio test1.gif 3 10
-node src/index.js sample.drawio test2.gif 10 15
+node src/index.js samples/sample.drawio test1.gif 3 10
+node src/index.js samples/sample.drawio test2.gif 10 15
 
 # Different FPS rates
-node src/index.js sample.drawio test3.gif 5 5
-node src/index.js sample.drawio test4.gif 5 20
+node src/index.js samples/sample.drawio test3.gif 5 5
+node src/index.js samples/sample.drawio test4.gif 5 20
 
 # Edge cases
-node src/index.js sample.drawio test5.gif 1 1
-node src/index.js sample.drawio test6.gif 60 30
+node src/index.js samples/sample.drawio test5.gif 1 1
+node src/index.js samples/sample.drawio test6.gif 60 30
 ```
 
 ## Code Style Guidelines

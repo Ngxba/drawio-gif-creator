@@ -13,11 +13,24 @@ export function downloadFile(url: string, filename: string): void {
 }
 
 /**
- * Generates the output filename by replacing draw.io extensions with .gif
+ * Generates the output filename by replacing extensions with .gif
  * @param inputFileName - The original file name
+ * @param inputExtension - The extension to replace (e.g., '.html', '.drawio')
  * @returns The output filename with .gif extension
  */
-export function generateOutputFileName(inputFileName?: string): string {
+export function generateOutputFileName(
+  inputFileName?: string,
+  inputExtension: string = '.drawio'
+): string {
   if (!inputFileName) return 'output.gif';
-  return inputFileName.replace(/\.(drawio|dio|xml)$/, '.gif');
+
+  // Build pattern based on input extension
+  let pattern: RegExp;
+  if (inputExtension === '.html') {
+    pattern = /\.(html|htm)$/;
+  } else {
+    pattern = /\.(drawio|dio|xml)$/;
+  }
+
+  return inputFileName.replace(pattern, '.gif');
 }
