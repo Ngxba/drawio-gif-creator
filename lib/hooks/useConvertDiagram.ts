@@ -14,10 +14,6 @@ interface ConversionPayload {
   settings: ConversionSettings;
 }
 
-/**
- * Convert a draw.io file to GIF
- * Used as the mutation function for React Query
- */
 async function convertDiagramToGif({
   file,
   settings,
@@ -41,10 +37,6 @@ async function convertDiagramToGif({
   return response.blob();
 }
 
-/**
- * Custom hook for converting draw.io diagrams to GIF using React Query
- * Handles mutation state, errors, and retry logic
- */
 export function useConvertDiagram() {
   return useMutation({
     mutationFn: convertDiagramToGif,

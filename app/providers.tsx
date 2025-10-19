@@ -3,8 +3,6 @@
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Create a client for the app. We can't use hooks here since this is a client component,
-// but we can create the client instance.
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
