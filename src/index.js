@@ -11,7 +11,7 @@ async function main() {
     try {
       const pages = await listPages(args[1]);
       console.log('Available pages in', args[1]);
-      pages.forEach(page => {
+      pages.forEach((page) => {
         console.log(`  [${page.index}] ${page.name}`);
       });
       process.exit(0);
@@ -22,7 +22,9 @@ async function main() {
   }
 
   if (args.length < 2) {
-    console.error('Usage: drawio-to-gif <input-file.drawio> <output-file.gif> [duration] [fps] [page|--all]');
+    console.error(
+      'Usage: drawio-to-gif <input-file.drawio> <output-file.gif> [duration] [fps] [page|--all]'
+    );
     console.error('');
     console.error('Arguments:');
     console.error('  input-file.drawio   Path to the draw.io diagram file');
@@ -31,14 +33,22 @@ async function main() {
       '  duration            Recording duration in seconds (default: 5)'
     );
     console.error('  fps                 Frames per second (default: 10)');
-    console.error('  page                Page index to export (default: 0, first page)');
-    console.error('  --all               Export all pages (creates multiple files)');
+    console.error(
+      '  page                Page index to export (default: 0, first page)'
+    );
+    console.error(
+      '  --all               Export all pages (creates multiple files)'
+    );
     console.error('');
     console.error('Examples:');
     console.error('  drawio-to-gif diagram.drawio output.gif');
     console.error('  drawio-to-gif diagram.drawio output.gif 10 15');
-    console.error('  drawio-to-gif diagram.drawio output.gif 5 10 1      # Export second page');
-    console.error('  drawio-to-gif diagram.drawio output.gif 5 10 --all  # Export all pages');
+    console.error(
+      '  drawio-to-gif diagram.drawio output.gif 5 10 1      # Export second page'
+    );
+    console.error(
+      '  drawio-to-gif diagram.drawio output.gif 5 10 --all  # Export all pages'
+    );
     console.error('');
     console.error('List pages:');
     console.error('  drawio-to-gif --list-pages diagram.drawio');
@@ -79,8 +89,16 @@ async function main() {
           `${outputName}-page${page.index}${outputExt}`
         );
 
-        console.log(`[${page.index + 1}/${pages.length}] Converting page "${page.name}" (index: ${page.index})...`);
-        await convertDrawioToGif(inputFile, pageOutputFile, duration, fps, page.index);
+        console.log(
+          `[${page.index + 1}/${pages.length}] Converting page "${page.name}" (index: ${page.index})...`
+        );
+        await convertDrawioToGif(
+          inputFile,
+          pageOutputFile,
+          duration,
+          fps,
+          page.index
+        );
         console.log(`  ✓ Saved to ${pageOutputFile}\n`);
       }
 

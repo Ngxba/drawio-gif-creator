@@ -1,5 +1,5 @@
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 
 export interface SliderSettingProps {
   id: string;

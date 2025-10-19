@@ -1,4 +1,8 @@
-const { readDrawioFile, extractDiagramXml, listPages } = require('./fileReader');
+const {
+  readDrawioFile,
+  extractDiagramXml,
+  listPages,
+} = require('./fileReader');
 const { renderDiagram } = require('./renderer');
 const { convertToGif, validateOutputPath } = require('./imageConverter');
 
@@ -11,7 +15,13 @@ const { convertToGif, validateOutputPath } = require('./imageConverter');
  * @param {number} pageIndex - Index of the page to export (0-based, default: 0)
  * @returns {Promise<void>}
  */
-async function convertDrawioToGif(inputFile, outputFile, duration = 5, fps = 10, pageIndex = 0) {
+async function convertDrawioToGif(
+  inputFile,
+  outputFile,
+  duration = 5,
+  fps = 10,
+  pageIndex = 0
+) {
   try {
     // Step 1: Validate input file extension
     if (!inputFile.match(/\.(drawio|dio|xml)$/i)) {
@@ -55,5 +65,5 @@ module.exports = {
   listPages: async (inputFile) => {
     const xmlContent = await readDrawioFile(inputFile);
     return listPages(xmlContent);
-  }
+  },
 };

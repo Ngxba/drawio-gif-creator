@@ -84,12 +84,12 @@ node src/index.js <input-file> <output-file> [duration] [fps] [page|--all]
 
 | Parameter     | Description                       | Required | Default | Range                     |
 | ------------- | --------------------------------- | -------- | ------- | ------------------------- |
-| `input-file`  | Path to your draw.io diagram file | ✅ Yes    | -       | `.drawio`, `.dio`, `.xml` |
-| `output-file` | Path for the output GIF file      | ✅ Yes    | -       | `.gif`                    |
-| `duration`    | Recording duration in seconds     | ❌ No     | 5       | 1-60                      |
-| `fps`         | Frames per second                 | ❌ No     | 10      | 1-30                      |
-| `page`        | Page index to export (0-based)    | ❌ No     | 0       | 0 to page count - 1       |
-| `--all`       | Export all pages                  | ❌ No     | -       | Creates multiple files    |
+| `input-file`  | Path to your draw.io diagram file | ✅ Yes   | -       | `.drawio`, `.dio`, `.xml` |
+| `output-file` | Path for the output GIF file      | ✅ Yes   | -       | `.gif`                    |
+| `duration`    | Recording duration in seconds     | ❌ No    | 5       | 1-60                      |
+| `fps`         | Frames per second                 | ❌ No    | 10      | 1-30                      |
+| `page`        | Page index to export (0-based)    | ❌ No    | 0       | 0 to page count - 1       |
+| `--all`       | Export all pages                  | ❌ No    | -       | Creates multiple files    |
 
 #### CLI Examples
 
@@ -143,6 +143,7 @@ node src/index.js diagram.drawio output.gif 5 10 --all
 ```
 
 **Output for `--all` flag:**
+
 - `output-page0.gif` - First page
 - `output-page1.gif` - Second page
 - `output-page2.gif` - Third page
@@ -157,12 +158,14 @@ When you upload a multi-page draw.io file to the web application:
 3. **ZIP Download** - When exporting all pages, you'll receive a ZIP file containing individual GIF files for each page
 
 **Features:**
+
 - 📄 Automatic page detection
 - 🎯 Select specific pages to export
 - 📦 Export all pages as a ZIP archive
 - 🏷️ Page names preserved in output filenames
 
 **Example:**
+
 ```
 Diagram with pages: "Architecture", "Flow", "Database"
 
@@ -285,6 +288,7 @@ Both the web app and CLI tool use the same conversion engine:
 ## 📦 Dependencies
 
 ### Core Conversion Engine
+
 - **[puppeteer](https://github.com/puppeteer/puppeteer)** (^24.0.0) - Headless Chrome automation
 - **[sharp](https://github.com/lovell/sharp)** (^0.33.0) - High-performance image processing
 - **[gif-encoder-2](https://github.com/benjaminadk/gif-encoder-2)** (^1.0.5) - Pure JavaScript GIF encoder

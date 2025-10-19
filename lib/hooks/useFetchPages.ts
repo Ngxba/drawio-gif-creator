@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
 export interface PageInfo {
   index: number;
@@ -8,14 +8,14 @@ export interface PageInfo {
   id: string;
 }
 
-const DEFAULT_PAGES: PageInfo[] = [{ index: 0, name: "Page 1", id: "default" }];
+const DEFAULT_PAGES: PageInfo[] = [{ index: 0, name: 'Page 1', id: 'default' }];
 
 async function fetchPagesFromFile(file: File): Promise<PageInfo[]> {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append('file', file);
 
-  const response = await fetch("/api/list-pages", {
-    method: "POST",
+  const response = await fetch('/api/list-pages', {
+    method: 'POST',
     body: formData,
   });
 
@@ -29,7 +29,7 @@ async function fetchPagesFromFile(file: File): Promise<PageInfo[]> {
 
 export function useFetchPages(file: File | null) {
   return useQuery({
-    queryKey: ["pages", file?.name, file?.size, file?.lastModified],
+    queryKey: ['pages', file?.name, file?.size, file?.lastModified],
     queryFn: () => fetchPagesFromFile(file!),
     enabled: !!file,
     retry: 1,

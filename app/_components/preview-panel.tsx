@@ -1,6 +1,6 @@
-import { ConversionProgress } from "@/app/_components/conversion-progress";
-import { PreviewPlaceholder } from "@/app/_components/preview-placeholder";
-import { PreviewResult } from "@/app/_components/preview-result";
+import { ConversionProgress } from '@/app/_components/conversion-progress';
+import { PreviewPlaceholder } from '@/app/_components/preview-placeholder';
+import { PreviewResult } from '@/app/_components/preview-result';
 
 interface PreviewPanelProps {
   isConverting: boolean;

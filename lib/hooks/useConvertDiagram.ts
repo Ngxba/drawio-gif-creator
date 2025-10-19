@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 
 export interface ConversionSettings {
   duration: number;
@@ -19,19 +19,19 @@ async function convertDiagramToGif({
   settings,
 }: ConversionPayload): Promise<Blob> {
   const formData = new FormData();
-  formData.append("file", file);
-  formData.append("duration", settings.duration.toString());
-  formData.append("fps", settings.fps.toString());
-  formData.append("pageIndex", settings.pageIndex.toString());
-  formData.append("exportAll", settings.exportAll.toString());
+  formData.append('file', file);
+  formData.append('duration', settings.duration.toString());
+  formData.append('fps', settings.fps.toString());
+  formData.append('pageIndex', settings.pageIndex.toString());
+  formData.append('exportAll', settings.exportAll.toString());
 
-  const response = await fetch("/api/convert", {
-    method: "POST",
+  const response = await fetch('/api/convert', {
+    method: 'POST',
     body: formData,
   });
 
   if (!response.ok) {
-    throw new Error("Conversion failed");
+    throw new Error('Conversion failed');
   }
 
   return response.blob();

@@ -8,7 +8,12 @@ const puppeteer = require('puppeteer');
  * @param {number} pageIndex - Index of the page to render (0-based, default: 0)
  * @returns {Promise<Array<Buffer>>} Array of PNG frame buffers
  */
-async function renderDiagram(xmlContent, duration = 5, fps = 10, pageIndex = 0) {
+async function renderDiagram(
+  xmlContent,
+  duration = 5,
+  fps = 10,
+  pageIndex = 0
+) {
   let browser = null;
 
   try {

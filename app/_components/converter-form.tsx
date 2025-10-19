@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { FileUploadCard } from "@/app/_components/file-upload-card";
-import { ConversionSettingsCard } from "@/app/_components/conversion-settings-card";
-import { PreviewPanel } from "@/app/_components/preview-panel";
-import { ActionButtons } from "@/app/_components/action-buttons";
-import { downloadFile, generateOutputFileName } from "@/lib/download-utils";
-import { useFetchPages } from "@/lib/hooks/useFetchPages";
+import { useState } from 'react';
+import { FileUploadCard } from '@/app/_components/file-upload-card';
+import { ConversionSettingsCard } from '@/app/_components/conversion-settings-card';
+import { PreviewPanel } from '@/app/_components/preview-panel';
+import { ActionButtons } from '@/app/_components/action-buttons';
+import { downloadFile, generateOutputFileName } from '@/lib/download-utils';
+import { useFetchPages } from '@/lib/hooks/useFetchPages';
 import {
   useConvertDiagram,
   type ConversionSettings,
-} from "@/lib/hooks/useConvertDiagram";
+} from '@/lib/hooks/useConvertDiagram';
 
 const DEFAULT_SETTINGS: ConversionSettings = {
   duration: 5,
@@ -54,7 +54,7 @@ export function ConverterForm() {
       if (settings.exportAll) {
         const outputFileName = file.name.replace(
           /\.(drawio|dio|xml)$/,
-          "-all.zip"
+          '-all.zip'
         );
         downloadFile(url, outputFileName);
       }
@@ -62,8 +62,8 @@ export function ConverterForm() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Failed to convert diagram. Please try again.";
-      console.error("Conversion error:", errorMessage);
+          : 'Failed to convert diagram. Please try again.';
+      console.error('Conversion error:', errorMessage);
       alert(errorMessage);
     }
   };

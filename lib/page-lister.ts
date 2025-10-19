@@ -25,7 +25,7 @@ export async function listPages(xmlContent: string): Promise<PageInfo[]> {
         pages.push({
           index: index,
           name: nameMatch ? nameMatch[1] : `Page ${index + 1}`,
-          id: idMatch ? idMatch[1] : `page-${index}`
+          id: idMatch ? idMatch[1] : `page-${index}`,
         });
       });
     }
@@ -36,7 +36,7 @@ export async function listPages(xmlContent: string): Promise<PageInfo[]> {
     }
 
     return pages;
-  } catch (error) {
+  } catch {
     // Fallback to single page
     return [{ index: 0, name: 'Page 1', id: 'default' }];
   }
