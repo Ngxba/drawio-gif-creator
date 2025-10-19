@@ -1,15 +1,20 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 export function ConversionProgress() {
   return (
     <Card className="flex flex-col flex-1">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <div className="flex items-center gap-3 animate-pulse">
+          <Image
+            src="images/claude-color.svg"
+            alt="Claude Logo"
+            width={20}
+            height={20}
+          />
           <span className="text-sm font-medium text-foreground">
-            Processing your diagram...
+            Thinking...
           </span>
         </div>
       </CardHeader>
@@ -17,10 +22,10 @@ export function ConversionProgress() {
         {/* Preview Skeleton */}
         <div className="flex-1 flex flex-col">
           <p className="text-xs text-muted-foreground mb-3">
-            Generating preview...
+            Searching for a way to convert your diagram...
           </p>
-          <div className="flex-1 rounded-lg border border-border bg-secondary dark:bg-muted p-4 min-h-0">
-            <Skeleton className="h-full w-full rounded" />
+          <div className="flex-1">
+            <Skeleton className="h-full w-full rounded-lg" />
           </div>
         </div>
       </CardContent>

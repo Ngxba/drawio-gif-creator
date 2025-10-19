@@ -1,5 +1,6 @@
 import { ConverterForm } from '@/app/_components/converter-form';
 import { ModeToggle } from '@/components/theme-toggle';
+import { PageTitle } from '@/app/_components/page-title';
 
 export default function Home() {
   return (
@@ -10,15 +11,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-3">
-              Draw.io to GIF Converter
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Convert your draw.io diagrams into animated GIF images
-            </p>
-          </div>
-
+          <PageTitle />
           <ConverterForm />
         </div>
       </div>

@@ -2,7 +2,13 @@
 
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// oxlint-disable-next-line no-named-as-default
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { TextPlugin } from 'gsap/TextPlugin';
 import { ThemeProvider } from 'next-themes';
+
+gsap.registerPlugin(useGSAP, TextPlugin);
 
 const queryClient = new QueryClient({
   defaultOptions: {

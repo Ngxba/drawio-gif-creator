@@ -118,3 +118,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.font-typing {
+  font-family: var(--font-typing), monospace;
+  letter-spacing: 0.05em;
+}
