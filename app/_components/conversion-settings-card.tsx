@@ -4,8 +4,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -14,9 +14,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { SliderSetting } from "./slider-setting";
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SliderSetting } from './slider-setting';
 
 interface PageInfo {
   index: number;
@@ -74,7 +74,7 @@ export function ConversionSettingsCard({
               <Select
                 value={settings.pageIndex.toString()}
                 onValueChange={(value) =>
-                  updateSetting("pageIndex", parseInt(value, 10))
+                  updateSetting('pageIndex', parseInt(value, 10))
                 }
                 disabled={disabled || isLoadingPages || settings.exportAll}
               >
@@ -105,7 +105,7 @@ export function ConversionSettingsCard({
                 id="export-all"
                 checked={settings.exportAll}
                 onCheckedChange={(checked) =>
-                  updateSetting("exportAll", checked === true)
+                  updateSetting('exportAll', checked === true)
                 }
                 disabled={disabled || isLoadingPages}
               />
@@ -132,7 +132,7 @@ export function ConversionSettingsCard({
           unit="seconds"
           min={1}
           max={60}
-          onValueChange={(value) => updateSetting("duration", value)}
+          onValueChange={(value) => updateSetting('duration', value)}
           disabled={disabled}
         />
 
@@ -143,17 +143,17 @@ export function ConversionSettingsCard({
           unit="fps"
           min={1}
           max={30}
-          onValueChange={(value) => updateSetting("fps", value)}
+          onValueChange={(value) => updateSetting('fps', value)}
           disabled={disabled}
         />
 
         <div className="rounded-lg bg-neutral-100 border border-neutral-200 p-4">
           <p className="text-sm text-neutral-700 font-medium">
-            Total frames:{" "}
+            Total frames:{' '}
             <span className="text-neutral-900">{totalFrames}</span>
           </p>
           <p className="text-sm text-neutral-700 font-medium">
-            Estimated size:{" "}
+            Estimated size:{' '}
             <span className="text-neutral-900">{estimatedSize} MB</span>
           </p>
         </div>

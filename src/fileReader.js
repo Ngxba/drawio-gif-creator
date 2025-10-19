@@ -39,10 +39,10 @@ async function readDrawioFile(filePath) {
  * Extracts the diagram XML from a draw.io file
  * Draw.io files can be plain XML or compressed/encoded
  * @param {string} xmlContent - Raw file content
- * @param {number} pageIndex - Index of the page to extract (0-based, default: 0)
+ * @param {number} _pageIndex - Index of the page to extract (0-based, default: 0)
  * @returns {string} The diagram XML
  */
-function extractDiagramXml(xmlContent, pageIndex = 0) {
+function extractDiagramXml(xmlContent, _pageIndex = 0) {
   // For most draw.io files, the XML is already in usable format
   // The draw.io viewer can handle the various formats
   return xmlContent;
@@ -70,7 +70,7 @@ function listPages(xmlContent) {
         pages.push({
           index: index,
           name: nameMatch ? nameMatch[1] : `Page ${index + 1}`,
-          id: idMatch ? idMatch[1] : `page-${index}`
+          id: idMatch ? idMatch[1] : `page-${index}`,
         });
       });
     }
@@ -81,7 +81,7 @@ function listPages(xmlContent) {
     }
 
     return pages;
-  } catch (error) {
+  } catch {
     // Fallback to single page
     return [{ index: 0, name: 'Page 1', id: 'default' }];
   }
@@ -90,5 +90,5 @@ function listPages(xmlContent) {
 module.exports = {
   readDrawioFile,
   extractDiagramXml,
-  listPages
+  listPages,
 };

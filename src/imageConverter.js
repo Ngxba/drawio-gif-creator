@@ -35,17 +35,14 @@ async function convertToGif(pngFrames, outputPath, fps = 10) {
     // Start encoding
     encoder.createReadStream().pipe(stream);
     encoder.start();
-    encoder.setRepeat(0);              // 0 for infinite loop
-    encoder.setDelay(1000 / fps);      // Delay between frames in milliseconds
-    encoder.setQuality(10);            // Quality level (1-30, lower is better)
+    encoder.setRepeat(0); // 0 for infinite loop
+    encoder.setDelay(1000 / fps); // Delay between frames in milliseconds
+    encoder.setQuality(10); // Quality level (1-30, lower is better)
 
     // Process and add each frame
     for (let i = 0; i < frames.length; i++) {
       // Convert PNG to raw RGBA pixel data
-      const rawPixels = await sharp(frames[i])
-        .ensureAlpha()
-        .raw()
-        .toBuffer();
+      const rawPixels = await sharp(frames[i]).ensureAlpha().raw().toBuffer();
 
       encoder.addFrame(rawPixels);
 
@@ -63,7 +60,6 @@ async function convertToGif(pngFrames, outputPath, fps = 10) {
     });
 
     console.log('GIF encoding complete!');
-
   } catch (error) {
     throw new Error(`Image conversion failed: ${error.message}`);
   }
@@ -93,5 +89,5 @@ async function validateOutputPath(outputPath) {
 
 module.exports = {
   convertToGif,
-  validateOutputPath
+  validateOutputPath,
 };

@@ -13,17 +13,20 @@ Thank you for your interest in contributing! This document provides guidelines a
 ### Setup
 
 1. Fork and clone the repository:
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/drawio-gif-creator.git
 cd drawio-gif-creator
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. (Optional) Set up pre-commit hooks:
+
 ```bash
 # Install pre-commit (requires Python)
 pip install pre-commit
@@ -59,6 +62,7 @@ npm run lint:fix
 #### Pre-commit Hooks (Optional)
 
 If you've set up pre-commit hooks, they will automatically run before each commit to:
+
 - Check for trailing whitespace
 - Fix end-of-file formatting
 - Validate YAML and JSON files
@@ -66,6 +70,7 @@ If you've set up pre-commit hooks, they will automatically run before each commi
 - Run ESLint
 
 To manually run all pre-commit checks:
+
 ```bash
 pre-commit run --all-files
 ```
@@ -82,6 +87,7 @@ pre-commit run --all-files
 ### Commit Messages
 
 Use clear, descriptive commit messages:
+
 - ✅ Good: `fix: handle timeout errors in renderer`
 - ✅ Good: `feat: add support for custom viewport sizes`
 - ❌ Bad: `fix bug`

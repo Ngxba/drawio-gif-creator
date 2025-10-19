@@ -6,6 +6,7 @@
 A dual-interface application that converts [draw.io](https://draw.io) / [diagrams.net](https://diagrams.net) diagram files into animated GIF images by recording the diagram loading and rendering process.
 
 **Two ways to use it:**
+
 - 💻 **Command-Line Tool** - Direct file conversion for automation and scripting
 - 🌐 **Web Application** - Modern Next.js UI with drag-and-drop file upload, real-time preview, and adjustable settings
 
@@ -83,12 +84,12 @@ node src/index.js <input-file> <output-file> [duration] [fps] [page|--all]
 
 | Parameter     | Description                       | Required | Default | Range                     |
 | ------------- | --------------------------------- | -------- | ------- | ------------------------- |
-| `input-file`  | Path to your draw.io diagram file | ✅ Yes    | -       | `.drawio`, `.dio`, `.xml` |
-| `output-file` | Path for the output GIF file      | ✅ Yes    | -       | `.gif`                    |
-| `duration`    | Recording duration in seconds     | ❌ No     | 5       | 1-60                      |
-| `fps`         | Frames per second                 | ❌ No     | 10      | 1-30                      |
-| `page`        | Page index to export (0-based)    | ❌ No     | 0       | 0 to page count - 1       |
-| `--all`       | Export all pages                  | ❌ No     | -       | Creates multiple files    |
+| `input-file`  | Path to your draw.io diagram file | ✅ Yes   | -       | `.drawio`, `.dio`, `.xml` |
+| `output-file` | Path for the output GIF file      | ✅ Yes   | -       | `.gif`                    |
+| `duration`    | Recording duration in seconds     | ❌ No    | 5       | 1-60                      |
+| `fps`         | Frames per second                 | ❌ No    | 10      | 1-30                      |
+| `page`        | Page index to export (0-based)    | ❌ No    | 0       | 0 to page count - 1       |
+| `--all`       | Export all pages                  | ❌ No    | -       | Creates multiple files    |
 
 #### CLI Examples
 
@@ -142,6 +143,7 @@ node src/index.js diagram.drawio output.gif 5 10 --all
 ```
 
 **Output for `--all` flag:**
+
 - `output-page0.gif` - First page
 - `output-page1.gif` - Second page
 - `output-page2.gif` - Third page
@@ -156,12 +158,14 @@ When you upload a multi-page draw.io file to the web application:
 3. **ZIP Download** - When exporting all pages, you'll receive a ZIP file containing individual GIF files for each page
 
 **Features:**
+
 - 📄 Automatic page detection
 - 🎯 Select specific pages to export
 - 📦 Export all pages as a ZIP archive
 - 🏷️ Page names preserved in output filenames
 
 **Example:**
+
 ```
 Diagram with pages: "Architecture", "Flow", "Database"
 
@@ -179,7 +183,7 @@ Here's an example of what you can create with this tool:
 
 ![Example GIF Output](result.gif)
 
-*Generated from the included `sample.drawio` file*
+_Generated from the included `sample.drawio` file_
 
 The application produces animated GIFs that loop continuously:
 
@@ -284,12 +288,14 @@ Both the web app and CLI tool use the same conversion engine:
 ## 📦 Dependencies
 
 ### Core Conversion Engine
+
 - **[puppeteer](https://github.com/puppeteer/puppeteer)** (^24.0.0) - Headless Chrome automation
 - **[sharp](https://github.com/lovell/sharp)** (^0.33.0) - High-performance image processing
 - **[gif-encoder-2](https://github.com/benjaminadk/gif-encoder-2)** (^1.0.5) - Pure JavaScript GIF encoder
 - **[archiver](https://github.com/archiverjs/node-archiver)** (^7.0.1) - ZIP file creation for multi-page exports
 
 ### Web Application
+
 - **[next](https://nextjs.org/)** (^15.5.4) - React framework with App Router
 - **[react](https://react.dev/)** (^19.2.0) - UI library
 - **[@radix-ui](https://www.radix-ui.com/)** - Headless UI components
@@ -301,20 +307,24 @@ Both the web app and CLI tool use the same conversion engine:
 ### Common Issues
 
 **"File not found" error**
+
 - Verify the input file path is correct
 - Ensure the file has a `.drawio`, `.dio`, or `.xml` extension
 
 **"Rendering timeout" error**
+
 - Check your internet connection (required to access diagrams.net viewer)
 - Try increasing the duration parameter
 - Ensure the draw.io file is valid
 
 **Large file sizes**
+
 - Reduce FPS (e.g., from 15 to 8)
 - Shorten duration (e.g., from 10s to 5s)
 - Simplify your diagram if possible
 
 **Out of memory errors**
+
 - Reduce the total frame count (duration × fps)
 - Process smaller diagrams
 - Increase Node.js memory: `node --max-old-space-size=4096 src/index.js ...`
@@ -368,6 +378,7 @@ SOFTWARE.
 ## 🌟 Show Your Support
 
 If you find this project useful, please consider:
+
 - ⭐ Starring the repository
 - 🐛 Reporting bugs or requesting features via [Issues](https://github.com/ngxba/drawio-gif-creator/issues)
 - 🔀 Contributing improvements via Pull Requests

@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+bun.lockb
+package-lock.json
+yarn.lock
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Cache directories
+.cache/
+.turbo/
+
+# Environment files
+.env
+.env*.local
+
+# Test output
+coverage/
+
+# Generated files
+*.log
+*.tsbuildinfo
+
+# Output files
+result.gif
+test-output.gif
+
+# OS files
+.DS_Store
+Thumbs.db

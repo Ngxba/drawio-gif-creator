@@ -2,14 +2,14 @@ import {
   convertDrawioToGif,
   isValidDrawioFile,
   validateConversionParams,
-} from "@/lib/converter";
-import { listPages } from "@/lib/page-lister";
-import archiver from "archiver";
-import { randomUUID } from "crypto";
-import { readFile, unlink, writeFile } from "fs/promises";
-import { NextRequest, NextResponse } from "next/server";
-import { tmpdir } from "os";
-import { join } from "path";
+} from '@/lib/converter';
+import { listPages } from '@/lib/page-lister';
+import archiver from 'archiver';
+import { randomUUID } from 'crypto';
+import { readFile, unlink, writeFile } from 'fs/promises';
+import { NextRequest, NextResponse } from 'next/server';
+import { tmpdir } from 'os';
+import { join } from 'path';
 
 export async function POST(request: NextRequest) {
   let inputPath: string | null = null;
@@ -18,14 +18,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const formData = await request.formData();
-    const file = formData.get("file") as File;
-    const duration = parseInt(formData.get("duration") as string) || 5;
-    const fps = parseInt(formData.get("fps") as string) || 10;
-    const pageIndex = parseInt(formData.get("pageIndex") as string) || 0;
-    const exportAll = formData.get("exportAll") === "true";
+    const file = formData.get('file') as File;
+    const duration = parseInt(formData.get('duration') as string) || 5;
+    const fps = parseInt(formData.get('fps') as string) || 10;
+    const pageIndex = parseInt(formData.get('pageIndex') as string) || 0;
+    const exportAll = formData.get('exportAll') === 'true';
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
     // Validate file extension
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Invalid file type. Please upload a .drawio, .dio, or .xml file",
+            'Invalid file type. Please upload a .drawio, .dio, or .xml file',
         },
         { status: 400 }
       );
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       return NextResponse.json(
         {
-          error: error instanceof Error ? error.message : "Invalid parameters",
+          error: error instanceof Error ? error.message : 'Invalid parameters',
         },
         { status: 400 }
       );
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     const fileName = file.name;
     inputPath = join(
       tempDir,
-      `${fileId}-input${fileName.substring(fileName.lastIndexOf("."))}`
+      `${fileId}-input${fileName.substring(fileName.lastIndexOf('.'))}`
     );
     outputPath = join(tempDir, `${fileId}-output.gif`);
 
@@ -78,7 +78,13 @@ export async function POST(request: NextRequest) {
         );
         outputPaths.push(pageOutputPath);
 
-        await convertDrawioToGif(inputPath, pageOutputPath, duration, fps, page.index);
+        await convertDrawioToGif(
+          inputPath,
+          pageOutputPath,
+          duration,
+          fps,
+          page.index
+        );
       }
 
       // Create a zip file
@@ -115,13 +121,16 @@ export async function POST(request: NextRequest) {
       }
 
       // Return the ZIP file
-      const outputFileName = file.name.replace(/\.(drawio|dio|xml)$/, "-all.zip");
+      const outputFileName = file.name.replace(
+        /\.(drawio|dio|xml)$/,
+        '-all.zip'
+      );
 
       return new NextResponse(new Uint8Array(zipBuffer), {
         status: 200,
         headers: {
-          "Content-Type": "application/zip",
-          "Content-Disposition": `attachment; filename="${outputFileName}"`,
+          'Content-Type': 'application/zip',
+          'Content-Disposition': `attachment; filename="${outputFileName}"`,
         },
       });
     } else {
@@ -136,13 +145,13 @@ export async function POST(request: NextRequest) {
       await unlink(outputPath);
 
       // Return the GIF file
-      const outputFileName = file.name.replace(/\.(drawio|dio|xml)$/, ".gif");
+      const outputFileName = file.name.replace(/\.(drawio|dio|xml)$/, '.gif');
 
       return new NextResponse(new Uint8Array(gifBuffer), {
         status: 200,
         headers: {
-          "Content-Type": "image/gif",
-          "Content-Disposition": `attachment; filename="${outputFileName}"`,
+          'Content-Type': 'image/gif',
+          'Content-Disposition': `attachment; filename="${outputFileName}"`,
         },
       });
     }
@@ -164,11 +173,11 @@ export async function POST(request: NextRequest) {
       } catch {}
     }
 
-    console.error("Conversion error:", error);
+    console.error('Conversion error:', error);
     return NextResponse.json(
       {
-        error: "Failed to convert diagram",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: 'Failed to convert diagram',
+        details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
