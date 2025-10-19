@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { FileUploadCard } from "@/app/_components/file-upload-card";
 import { ConversionSettingsCard } from "@/app/_components/conversion-settings-card";
 import { PreviewPanel } from "@/app/_components/preview-panel";
@@ -29,13 +29,20 @@ export function ConverterForm() {
   const { mutateAsync: convertDiagram, isPending: isConverting } =
     useConvertDiagram();
 
-  const handleFileChange = useCallback((newFile: File | null) => {
+  const updateSetting = <K extends keyof ConversionSettings>(
+    key: K,
+    value: ConversionSettings[K]
+  ) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleFileChange = (newFile: File | null) => {
     setFile(newFile);
     setOutputUrl(null);
     setSettings((prev) => ({ ...prev, pageIndex: 0, exportAll: false }));
-  }, []);
+  };
 
-  const handleConvert = useCallback(async () => {
+  const handleConvert = async () => {
     if (!file) return;
 
     try {
@@ -59,7 +66,7 @@ export function ConverterForm() {
       console.error("Conversion error:", errorMessage);
       alert(errorMessage);
     }
-  }, [file, settings, convertDiagram]);
+  };
 
   const handleDownload = () => {
     if (!outputUrl) return;
@@ -81,7 +88,7 @@ export function ConverterForm() {
       {/* Conversion Settings Section */}
       <ConversionSettingsCard
         settings={settings}
-        onSettingsChange={setSettings}
+        updateSetting={updateSetting}
         disabled={isConverting}
         pages={pages}
         isLoadingPages={isLoadingPages}
