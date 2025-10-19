@@ -24,7 +24,7 @@ export function ActionButtons({
         onClick={onConvert}
         disabled={!file || isConverting}
         size="lg"
-        className="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-medium transition-colors duration-150 not-lg:row-start-3"
+        className="flex-1 font-medium transition-colors duration-150 not-lg:row-start-3"
       >
         Convert to GIF
       </Button>
@@ -34,7 +34,7 @@ export function ActionButtons({
         <Button
           onClick={onDownload}
           size="lg"
-          className="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-medium transition-colors duration-150"
+          className="flex-1 font-medium transition-colors duration-150"
         >
           Download GIF as {outputFileName}
         </Button>

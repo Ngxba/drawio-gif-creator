@@ -25,10 +25,10 @@ export function SliderSetting({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <Label htmlFor={id} className="text-neutral-700 font-medium">
+        <Label htmlFor={id} className="font-medium">
           {label}
         </Label>
-        <span className="text-sm font-medium text-neutral-900">
+        <span className="text-sm font-medium text-foreground">
           {value} {unit}
         </span>
       </div>
