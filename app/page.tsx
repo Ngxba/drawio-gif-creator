@@ -1,4 +1,4 @@
-import { ConverterForm } from "@/components/converter-form";
+import { ConverterForm } from "@/app/_components/converter-form";
 
 export default function Home() {
   return (

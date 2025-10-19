@@ -1,16 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { writeFile, unlink, readFile } from "fs/promises";
-import { join } from "path";
-import { tmpdir } from "os";
-import { randomUUID } from "crypto";
-import archiver from "archiver";
-import { Readable } from "stream";
 import {
   convertDrawioToGif,
-  validateConversionParams,
   isValidDrawioFile,
+  validateConversionParams,
 } from "@/lib/converter";
 import { listPages } from "@/lib/page-lister";
+import archiver from "archiver";
+import { randomUUID } from "crypto";
+import { readFile, unlink, writeFile } from "fs/promises";
+import { NextRequest, NextResponse } from "next/server";
+import { tmpdir } from "os";
+import { join } from "path";
 
 export async function POST(request: NextRequest) {
   let inputPath: string | null = null;

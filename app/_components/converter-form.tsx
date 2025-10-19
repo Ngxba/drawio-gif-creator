@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { FileUploadCard } from "@/components/file-upload-card";
-import { ConversionSettingsCard } from "@/components/conversion-settings-card";
-import { PreviewPanel } from "@/components/preview-panel";
-import { ActionButtons } from "@/components/action-buttons";
+import { FileUploadCard } from "@/app/_components/file-upload-card";
+import { ConversionSettingsCard } from "@/app/_components/conversion-settings-card";
+import { PreviewPanel } from "@/app/_components/preview-panel";
+import { ActionButtons } from "@/app/_components/action-buttons";
 import { downloadFile, generateOutputFileName } from "@/lib/download-utils";
 import { useFetchPages } from "@/lib/hooks/useFetchPages";
 import {
