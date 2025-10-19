@@ -72,7 +72,8 @@
       "prettier --write"
     ],
     "*.{js,jsx,ts,tsx}": [
-      "oxlint --fix"
+      "oxlint --fix",
+      "oxlint"
     ]
   }
 }
