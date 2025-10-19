@@ -55,9 +55,9 @@ jobs:
 
       - name: Test conversion (if sample.drawio exists)
         run: |
-          if [ -f "sample.drawio" ]; then
-            echo "Testing with sample.drawio..."
-            node src/index.js sample.drawio test-output.gif 3 8
+          if [ -f "samples/sample.drawio" ]; then
+            echo "Testing with samples/sample.drawio..."
+            node src/index.js samples/sample.drawio samples/test-output.gif 3 8
             echo "Test successful!"
           else
             echo "No sample file found, skipping test"

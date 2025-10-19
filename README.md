@@ -50,7 +50,7 @@ npm install
 
 ```bash
 # Try with the included sample diagram
-node src/index.js sample.drawio output.gif
+node src/index.js samples/sample.drawio output.gif
 
 # Convert your own diagram with default settings (5 seconds at 10 fps)
 node src/index.js your-diagram.drawio output.gif
@@ -68,7 +68,7 @@ npm run dev
 # Open http://localhost:3000 in your browser
 ```
 
-> 💡 **Tip**: A `sample.drawio` file is included in the repository so you can test the tool immediately!
+> 💡 **Tip**: A `sample.drawio` file is included in the `/samples` directory so you can test the tool immediately!
 
 ## 📖 Usage Guide
 
@@ -181,9 +181,9 @@ Export All creates: diagram-all.zip containing:
 
 Here's an example of what you can create with this tool:
 
-![Example GIF Output](result.gif)
+![Example GIF Output](samples/result.gif)
 
-_Generated from the included `sample.drawio` file_
+_Generated from the included `samples/sample.drawio` file_
 
 The application produces animated GIFs that loop continuously:
 
@@ -201,14 +201,14 @@ The application produces animated GIFs that loop continuously:
 
 ### Try It Yourself
 
-A sample draw.io file (`sample.drawio`) is included in the repository. You can test the tool immediately after installation:
+A sample draw.io file is included in the `/samples` directory. You can test the tool immediately after installation:
 
 ```bash
 # Using the included sample file
-node src/index.js sample.drawio my-output.gif
+node src/index.js samples/sample.drawio my-output.gif
 
 # Or with custom settings
-node src/index.js sample.drawio my-output.gif 5 15
+node src/index.js samples/sample.drawio my-output.gif 5 15
 ```
 
 ## 📊 Performance & Optimization
@@ -269,8 +269,10 @@ drawio-gif-creator/
 │   ├── fileReader.js     # File reading and page detection
 │   ├── renderer.js       # Puppeteer frame capture
 │   └── imageConverter.js # GIF encoding
-├── sample.drawio         # Sample diagram file (multi-page)
-├── result.gif            # Example output
+├── samples/              # Sample diagrams and test data
+│   ├── sample.drawio     # Sample diagram file (multi-page)
+│   ├── multi-page-sample.drawio  # Multi-page example
+│   └── result.gif        # Example output
 └── README.md             # This file
 ```
 

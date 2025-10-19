@@ -25,7 +25,7 @@
 
 <!-- Describe how you tested your changes -->
 
-- [ ] Tested with sample.drawio file
+- [ ] Tested with samples/sample.drawio file
 - [ ] Tested with custom draw.io files
 - [ ] Tested different duration/fps settings
 - [ ] Verified GIF output quality

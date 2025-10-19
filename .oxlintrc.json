@@ -174,7 +174,6 @@
     ".turbo/",
     "*.log",
     "*.tsbuildinfo",
-    "result.gif",
-    "test-output.gif"
+    "samples/"
   ]
 }
