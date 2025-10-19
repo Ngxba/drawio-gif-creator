@@ -43,10 +43,10 @@ export function FileUploadCard({
   };
 
   return (
-    <Card className="bg-white border-neutral-200">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-neutral-900">Upload Diagram</CardTitle>
-        <CardDescription className="text-neutral-600">
+        <CardTitle>Upload Diagram</CardTitle>
+        <CardDescription>
           Select a draw.io file (.drawio, .dio, or .xml) to convert
         </CardDescription>
       </CardHeader>
@@ -71,8 +71,9 @@ export function FileUploadCard({
             </Button>
           </div>
           {file && (
-            <p className="text-sm text-neutral-600">
-              Selected: <span className="font-medium">{file.name}</span> (
+            <p className="text-sm text-muted-foreground">
+              Selected:{' '}
+              <span className="font-medium text-foreground">{file.name}</span> (
               {(file.size / 1024).toFixed(2)} KB)
             </p>
           )}
