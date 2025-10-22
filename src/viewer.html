@@ -1,78 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Draw.io Diagram Viewer</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: white;
-            font-family: Arial, sans-serif;
-        }
-        #graphContainer {
-            width: 100%;
-            height: 100vh;
-            overflow: visible;
-            position: relative;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        background: white;
+        font-family: Arial, sans-serif;
+      }
+      #graphContainer {
+        width: 100%;
+        height: 100vh;
+        overflow: visible;
+        position: relative;
+      }
     </style>
     <!-- Use viewer.diagrams.net but embed it as an iframe -->
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const xmlData = urlParams.get('xml');
+      window.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const xmlData = urlParams.get('xml');
 
-            if (!xmlData) {
-                console.error('No XML data provided');
-                document.body.innerHTML = '<p>No diagram data provided</p>';
-                return;
+        if (!xmlData) {
+          console.error('No XML data provided');
+          document.body.innerHTML = '<p>No diagram data provided</p>';
+          return;
+        }
+
+        try {
+          const decodedXml = decodeURIComponent(xmlData);
+          console.log('XML data loaded, length:', decodedXml.length);
+
+          // Create iframe to load viewer.diagrams.net
+          const iframe = document.createElement('iframe');
+          iframe.id = 'diagramFrame';
+          iframe.style.width = '100%';
+          iframe.style.height = '100vh';
+          iframe.style.border = 'none';
+
+          // Use viewer.diagrams.net with the XML
+          const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=0#R${encodeURIComponent(decodedXml)}`;
+          iframe.src = viewerUrl;
+
+          document.getElementById('graphContainer').appendChild(iframe);
+
+          // Wait for iframe to load and render
+          iframe.onload = function () {
+            console.log('Iframe loaded');
+            // Give extra time for diagram to render
+            setTimeout(() => {
+              window.diagramReady = true;
+              console.log('Diagram ready flag set');
+            }, 2000);
+          };
+
+          // Fallback timeout
+          setTimeout(() => {
+            if (!window.diagramReady) {
+              console.log('Fallback: Setting diagram ready after timeout');
+              window.diagramReady = true;
             }
-
-            try {
-                const decodedXml = decodeURIComponent(xmlData);
-                console.log('XML data loaded, length:', decodedXml.length);
-
-                // Create iframe to load viewer.diagrams.net
-                const iframe = document.createElement('iframe');
-                iframe.id = 'diagramFrame';
-                iframe.style.width = '100%';
-                iframe.style.height = '100vh';
-                iframe.style.border = 'none';
-
-                // Use viewer.diagrams.net with the XML
-                const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=0#R${encodeURIComponent(decodedXml)}`;
-                iframe.src = viewerUrl;
-
-                document.getElementById('graphContainer').appendChild(iframe);
-
-                // Wait for iframe to load and render
-                iframe.onload = function() {
-                    console.log('Iframe loaded');
-                    // Give extra time for diagram to render
-                    setTimeout(() => {
-                        window.diagramReady = true;
-                        console.log('Diagram ready flag set');
-                    }, 2000);
-                };
-
-                // Fallback timeout
-                setTimeout(() => {
-                    if (!window.diagramReady) {
-                        console.log('Fallback: Setting diagram ready after timeout');
-                        window.diagramReady = true;
-                    }
-                }, 5000);
-
-            } catch (error) {
-                console.error('Error rendering diagram:', error);
-                document.body.innerHTML = '<p>Error rendering diagram: ' + error.message + '</p>';
-            }
-        });
+          }, 5000);
+        } catch (error) {
+          console.error('Error rendering diagram:', error);
+          document.body.innerHTML =
+            '<p>Error rendering diagram: ' + error.message + '</p>';
+        }
+      });
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="graphContainer"></div>
-</body>
+  </body>
 </html>
