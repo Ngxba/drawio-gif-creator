@@ -1,25 +1,73 @@
 const puppeteer = require('puppeteer');
 
 /**
- * Renders a draw.io diagram by capturing frames over time
+ * Renders a draw.io diagram by capturing frames over time with retry logic
  * @param {string} xmlContent - The draw.io XML content
  * @param {number} duration - Recording duration in seconds (default: 5)
  * @param {number} fps - Frames per second to capture (default: 10)
  * @param {number} pageIndex - Index of the page to render (0-based, default: 0)
+ * @param {number} retryCount - Number of retries (default: 3)
  * @returns {Promise<Array<Buffer>>} Array of PNG frame buffers
  */
 async function renderDiagram(
   xmlContent,
   duration = 5,
   fps = 10,
-  pageIndex = 0
+  pageIndex = 0,
+  retryCount = 3
 ) {
-  let browser = null;
+  for (let attempt = 1; attempt <= retryCount; attempt++) {
+    let browser = null;
+
+    try {
+      console.log(
+        `Rendering attempt ${attempt}/${retryCount}${attempt > 1 ? ' (retry)' : ''}...`
+      );
+      return await renderDiagramAttempt(
+        xmlContent,
+        duration,
+        fps,
+        pageIndex,
+        browser
+      );
+    } catch (error) {
+      console.error(`Attempt ${attempt} failed:`, error.message);
+
+      if (attempt === retryCount) {
+        throw error;
+      }
+
+      // Wait before retrying (exponential backoff)
+      const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+      console.log(`Waiting ${waitTime}ms before retry...`);
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+    }
+  }
+}
+
+/**
+ * Single attempt to render a diagram
+ * @private
+ */
+async function renderDiagramAttempt(
+  xmlContent,
+  duration,
+  fps,
+  pageIndex,
+  browserInstance
+) {
+  let browser = browserInstance;
 
   try {
     browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-web-security', // Allow cross-origin requests
+        '--disable-features=IsolateOrigins,site-per-process',
+      ],
     });
 
     const page = await browser.newPage();
@@ -31,22 +79,40 @@ async function renderDiagram(
       deviceScaleFactor: 1, // Lower for better performance with animation
     });
 
-    // Encode the diagram for the URL
-    const encodedXml = encodeURIComponent(xmlContent);
-    // Add page parameter to select specific page (0-based index)
-    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=${pageIndex}&title=diagram#R${encodedXml}`;
-
-    // Navigate to the viewer
-    await page.goto(viewerUrl, {
-      waitUntil: 'networkidle2',
-      timeout: 30000,
+    // Log console messages from the page for debugging
+    page.on('console', (msg) => {
+      console.log(`Browser console [${msg.type()}]:`, msg.text());
     });
 
-    // Wait for the diagram to render - look for the diagram container
-    await page.waitForSelector('.geDiagramContainer', { timeout: 15000 });
+    // Log page errors
+    page.on('pageerror', (error) => {
+      console.error('Browser page error:', error.message);
+    });
 
-    // Give it a moment to start rendering
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Encode the diagram for the URL
+    const encodedXml = encodeURIComponent(xmlContent);
+    // Use viewer.diagrams.net with increased timeout parameters
+    const viewerUrl = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=0&page=${pageIndex}&title=diagram#R${encodedXml}`;
+
+    console.log('Navigating to viewer...');
+
+    // Navigate to the viewer with longer timeout
+    await page.goto(viewerUrl, {
+      waitUntil: 'domcontentloaded', // Changed from networkidle2 for faster loading
+      timeout: 60000, // Increased to 60 seconds
+    });
+
+    console.log('Page loaded, waiting for diagram container...');
+
+    // Wait for the diagram to render - look for the diagram container with longer timeout
+    await page.waitForSelector('.geDiagramContainer', {
+      timeout: 45000, // Increased to 45 seconds
+    });
+
+    console.log('Diagram container found, waiting for content to stabilize...');
+
+    // Give extra time for rendering to complete
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Find the diagram element and get its bounding box
     const diagramElement = await page.$('.geDiagramContainer');
